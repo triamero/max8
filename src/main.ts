@@ -10,10 +10,12 @@ class Main extends Phaser.Game {
             scale: {
                 autoCenter: Phaser.Scale.Center.CENTER_BOTH,
                 mode: Phaser.Scale.ScaleModes.FIT
+            },
+            render: {
+                transparent: true
             }
         };
 
-        console.log("window size:", [window.innerWidth, window.innerHeight]);
         super(config);
 
         this.scene.add("boot", BootScene, false);
