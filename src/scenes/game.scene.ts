@@ -32,8 +32,6 @@ export class GameScene extends Phaser.Scene {
 
     // noinspection JSUnusedGlobalSymbols
     create() {
-        this.add.image(300, 400, "background");
-
         this.input.setTopOnly(true);
 
         this._cells = [];

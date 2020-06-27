@@ -32,8 +32,6 @@ export class NewGameScene extends Phaser.Scene {
 
     // noinspection JSUnusedGlobalSymbols
     create() {
-        this.add.image(300, 400, "background");
-
         this.add.text(90, 100, "УРОВЕНЬ СЛОЖНОСТИ", this._textStyle);
         this.add.existing(this._easy = new SquareButtonObject(this, 175, 250, "НИЗКИЙ"));
         this.add.existing(this._hard = new SquareButtonObject(this, 425, 250, "ВЫСОКИЙ"));
