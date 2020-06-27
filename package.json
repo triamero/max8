@@ -20,6 +20,9 @@
     "webpack": "^4.41.4",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1",
-    "webpack-merge": "^4.2.2"
+    "webpack-merge": "^4.2.2",
+    "websocket-extensions": ">=0.1.4",
+    "acorn": ">=6.4.1",
+    "minimist": ">=1.2.3"
   }
 }
