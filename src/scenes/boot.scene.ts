@@ -3,8 +3,8 @@ import {Difficulty, GameConfig} from "@m8/core";
 export class BootScene extends Phaser.Scene {
 
     preload() {
-        this.load.image("menu-button", "dist/menu-button.png");
-        this.load.image("square-button", "dist/square.png");
+        this.load.image("flat-button", "dist/flat-button.png");
+        this.load.image("square-button", "dist/square-button.png");
     }
 
     create() {

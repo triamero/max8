@@ -47,7 +47,8 @@ export class GameScene extends Phaser.Scene {
                     this._factory
                         .createTile(this, x, y)
                         .setValue(this._gameField.getCell(x, y).value)
-                        .setScale(0, 1);
+                        .setScale(0, 1)
+                        .disable();
 
                 tweens.push({
                     targets: [this._cells[x][y]],
@@ -88,7 +89,7 @@ export class GameScene extends Phaser.Scene {
             text: this.add.text(450, 100, "0 очк.", {fontFamily: "m8", fontSize: 24, fixedWidth: 100, align: "center"})
         };
 
-        this._pointer = this._factory.createPointer(this).setStrokeStyle(6, 0x442c52);
+        this._pointer = this._factory.createPointer(this).setStrokeStyle(6, 0x778CA7);
 
         this._pointer.moveToVertical(this._playerSide.index);
 

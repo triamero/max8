@@ -5,7 +5,7 @@ export class TileObject extends ClickableObject {
     private readonly _textStyle: any = {
         fontSize: 40,
         fontFamily: "m8",
-        color: "#aaaaaa",
+        color: "#ffffff",
         fixedWidth: 74,
         align: "center"
     };
@@ -30,10 +30,12 @@ export class TileObject extends ClickableObject {
 
         this._rect = scene.add.image(0, 0, "square-button");
 
-        this._rect.setScale(width / this._rect.width, height / this._rect.height);
+        this._rect
+            .setScale(width / this._rect.width, height / this._rect.height)
+            .setAlpha(0.9);
 
         this._bound = scene.add.graphics()
-            .lineStyle(5, 0xf8fc03)
+            .lineStyle(5, 0xBAB580)
             .strokeRoundedRect(-width / 2, -height / 2, width, height, 23)
             .setVisible(false);
 
@@ -43,9 +45,7 @@ export class TileObject extends ClickableObject {
 
         this.setSize(width, height).setInteractive({useHandCursor: true});
 
-        this.add([this._rect, this._bound, this._text]);
-
-        this.setAlpha(0.75);
+        this.add([this._rect, this._text, this._bound]);
     }
 
     public select(): this {
@@ -79,7 +79,7 @@ export class TileObject extends ClickableObject {
         }
 
         this.disableInteractive();
-        this.setAlpha(0.75);
+        this.setAlpha(0.65);
         return this;
     }
 
