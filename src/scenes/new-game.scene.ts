@@ -14,7 +14,7 @@ export class NewGameScene extends Phaser.Scene {
     private _textStyle: any = {
         fontSize: 36,
         fontFamily: "m8",
-        color: "#000000",
+        color: "#aaaaaa",
         fixedWidth: 430,
         align: "center"
     };

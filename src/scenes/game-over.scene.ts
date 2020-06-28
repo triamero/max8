@@ -13,16 +13,7 @@ export class GameOverScene extends Phaser.Scene {
 
     // noinspection JSUnusedGlobalSymbols
     create() {
-
-        const window = this.add.graphics();
-        window.fillStyle(0x593711, 0.75);
-        window.fillRoundedRect(150, 250, 300, 300, 50);
-
-        const bound = this.add.graphics();
-        bound.lineStyle(5, 0x000000, 0.75);
-        bound.strokeRoundedRect(150, 250, 300, 300, 50);
-
-
+        const window = this.add.image(300, 400, "square-button").setScale(2);
         this._text = this.add.text(150, 300, this._getText(), {
             fontFamily: "m8",
             fontSize: 36,

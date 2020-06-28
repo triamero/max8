@@ -10,7 +10,7 @@ export class MenuButtonObject extends ClickableObject {
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y);
 
-        this._img = scene.add.image(0, 0, "menu-button");
+        this._img = scene.add.image(0, 0, "flat-button");
         this._text = scene.add.text(-131, -12, "", {
             fixedWidth: 261,
             fontSize: "24px",
