@@ -94,6 +94,8 @@ export class GameScene extends Phaser.Scene {
         this._pointer.moveToVertical(this._playerSide.index);
 
         this._redrawField();
+
+        this.add.image(600, 35, "gear").setInteractive({useHandCursor: true});
     }
 
     private _onTileTaken(x: number, y: number) {
