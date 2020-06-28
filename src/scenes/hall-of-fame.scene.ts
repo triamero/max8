@@ -20,6 +20,9 @@ export class HallOfFameScene extends Phaser.Scene {
             wordWrap: {width: 300, useAdvancedWrap: true}
         });
 
-        this.add.existing(new MenuButtonObject(this, 350, 430).setText("УЙТИ").on("click", () => this.scene.switch("menu")));
+        this.add.existing(
+            new MenuButtonObject(this, 350, 430)
+                .setText("УЙТИ")
+                .on("click", () => this.scene.switch("main-menu")));
     }
 }

@@ -30,7 +30,7 @@ export class GameOverScene extends Phaser.Scene {
 
     private _onComplete() {
 
-        this.scene.start("menu");
+        this.scene.start("main-menu");
 
         this.scene.stop("game");
         this.scene.stop("game-over");

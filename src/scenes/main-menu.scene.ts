@@ -1,6 +1,6 @@
 import {MenuButtonObject} from "@m8/objects";
 
-export class MenuScene extends Phaser.Scene {
+export class MainMenuScene extends Phaser.Scene {
 
     create() {
         this.add.existing(new MenuButtonObject(this, 350, 250).setText("Новая игра").on("click", () => this.scene.start("new-game")));
