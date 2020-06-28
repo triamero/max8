@@ -13,8 +13,8 @@ export class GameOverScene extends Phaser.Scene {
 
     // noinspection JSUnusedGlobalSymbols
     create() {
-        const window = this.add.image(300, 400, "square-button").setScale(2);
-        this._text = this.add.text(150, 300, this._getText(), {
+        const window = this.add.image(350, 400, "square-button").setScale(2);
+        this._text = this.add.text(200, 300, this._getText(), {
             fontFamily: "m8",
             fontSize: 36,
             fixedWidth: 300,
@@ -23,7 +23,7 @@ export class GameOverScene extends Phaser.Scene {
         });
 
         this.add.existing(
-            new MenuButtonObject(this, 300, 450)
+            new MenuButtonObject(this, 350, 450)
                 .setText("Завершить")
                 .on("click", this._onComplete, this));
     }

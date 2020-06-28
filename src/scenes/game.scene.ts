@@ -80,13 +80,13 @@ export class GameScene extends Phaser.Scene {
         this._playerSide = {
             index: RandomHelper.GenerateIndex(this._gameField.size),
             score: 0,
-            text: this.add.text(50, 100, "0 очк.", {fontFamily: "m8", fontSize: 24, fixedWidth: 100, align: "center"})
+            text: this.add.text(100, 100, "0 очк.", {fontFamily: "m8", fontSize: 24, fixedWidth: 100, align: "center"})
         };
 
         this._enemySide = {
             index: RandomHelper.GenerateIndex(this._gameField.size),
             score: 0,
-            text: this.add.text(450, 100, "0 очк.", {fontFamily: "m8", fontSize: 24, fixedWidth: 100, align: "center"})
+            text: this.add.text(500, 100, "0 очк.", {fontFamily: "m8", fontSize: 24, fixedWidth: 100, align: "center"})
         };
 
         this._pointer = this._factory.createPointer(this).setStrokeStyle(6, 0x778CA7);

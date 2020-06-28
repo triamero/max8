@@ -5,7 +5,7 @@ class Main extends Phaser.Game {
     constructor() {
         const config: Phaser.Types.Core.GameConfig = {
             type: Phaser.AUTO,
-            width: 600,
+            width: 700,
             height: 800,
             scale: {
                 autoCenter: Phaser.Scale.Center.CENTER_BOTH,
