@@ -13,6 +13,6 @@ export class BootScene extends Phaser.Scene {
             difficulty: Difficulty.Easy
         };
 
-        this.scene.start("menu", config);
+        this.scene.start("main-menu", config);
     }
 }

@@ -64,7 +64,15 @@ export class TileObject extends ClickableObject {
 
     public setValue(value: number): this {
         this._value = value;
-        this._text.setText(value > 0 ? "+" + value.toFixed(0) : value.toFixed(0));
+
+        if (value > 0) {
+            this._text.setStyle({color: "#c7ffce"});
+            this._text.setText("+" + value.toFixed(0));
+        } else {
+            this._text.setStyle({color: "#ffc7c7"});
+            this._text.setText(value.toFixed(0))
+        }
+
         return this;
     }
 

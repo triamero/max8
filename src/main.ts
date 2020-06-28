@@ -1,11 +1,11 @@
 import * as Phaser from "phaser";
-import {BootScene, GameOverScene, GameScene, HallOfFameScene, MenuScene, NewGameScene, TrainingScene} from "./scenes";
+import {BootScene, GameOverScene, GameScene, HallOfFameScene, MainMenuScene, NewGameScene, TrainingScene} from "./scenes";
 
 class Main extends Phaser.Game {
     constructor() {
         const config: Phaser.Types.Core.GameConfig = {
             type: Phaser.AUTO,
-            width: 600,
+            width: 700,
             height: 800,
             scale: {
                 autoCenter: Phaser.Scale.Center.CENTER_BOTH,
@@ -22,7 +22,7 @@ class Main extends Phaser.Game {
         this.scene.add("game", GameScene, false);
         this.scene.add("game-over", GameOverScene, false);
         this.scene.add("hall-of-fame", HallOfFameScene, false);
-        this.scene.add("menu", MenuScene, false);
+        this.scene.add("main-menu", MainMenuScene, false);
         this.scene.add("new-game", NewGameScene, false);
         this.scene.add("training", TrainingScene, false);
 
