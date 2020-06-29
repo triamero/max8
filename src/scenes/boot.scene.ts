@@ -11,7 +11,8 @@ export class BootScene extends Phaser.Scene {
     create() {
         const config: GameConfig = {
             size: 6,
-            difficulty: Difficulty.Easy
+            difficulty: Difficulty.Easy,
+            isNew: false
         };
 
         this.scene.start("main-menu", config);

@@ -19,8 +19,31 @@ export class Factory {
         throw new Error("Unknown difficulty");
     }
 
+    /** Создать игровое поле */
     public createField(): GameField {
         return new GameField(this._config.size);
+    }
+
+    /** Создать игровое поле из массива ячеек */
+    public createFieldFromCells(cells: number[][]): GameField {
+        const field = new GameField(this._config.size);
+
+        for (let x = 0; x < field.size; x++) {
+            for (let y = 0; y < field.size; y++) {
+
+                const value = cells[x][y];
+
+                const cell = field.getCell(x, y);
+
+                if (value === 0) {
+                    cell.destroy();
+                } else {
+                    cell.setValue(value);
+                }
+            }
+        }
+
+        return field;
     }
 
     public createTile(scene: Phaser.Scene, x: number, y: number): TileObject {

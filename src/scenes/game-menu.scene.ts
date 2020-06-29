@@ -11,26 +11,28 @@ export class GameMenuScene extends Phaser.Scene {
         this.add.existing(
             new MenuButtonObject(this, 350, 450)
                 .setText("Продолжить")
-                .on("click", () => this.scene.start("game")));
+                .on("click", this._onContinue, this));
 
         this.add.existing(
             new MenuButtonObject(this, 350, 450)
                 .setText("Заново")
-                .on("click", this._onComplete, this));
+                .on("click", this._onRestart, this));
 
         this.add.existing(
             new MenuButtonObject(this, 350, 450)
                 .setText("Новая игра")
-                .on("click", this._onComplete, this));
+                .on("click", this._onNewGame, this));
     }
 
     private _onContinue() {
-
-        //this.scene.start("")
-        this.scene.stop("game-over");
+        this.scene.stop("game-menu");
     }
 
-    private _onComplete() {
+    private _onRestart() {
+
+    }
+
+    private _onNewGame() {
 
         this.scene.start("main-menu");
 

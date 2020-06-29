@@ -74,7 +74,8 @@ export class NewGameScene extends Phaser.Scene {
 
         const config: GameConfig = {
             difficulty: this._easy.selected ? Difficulty.Easy : Difficulty.Hard,
-            size: this._small.selected ? 6 : 8
+            size: this._small.selected ? 6 : 8,
+            isNew: true
         };
 
         localStorage.setItem("game-config", JSON.stringify(config));

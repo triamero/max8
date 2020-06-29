@@ -34,7 +34,7 @@ export class GameField extends Phaser.Events.EventEmitter {
             this._cells.push([]);
 
             for (let y = 0; y < _size; y++) {
-                this._cells[x].push(new GameCell(x, y, RandomHelper.GenerateValue()));
+                this._cells[x].push(new GameCell(x, y).setValue(RandomHelper.GenerateValue()));
             }
         }
     }
