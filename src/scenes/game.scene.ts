@@ -1,6 +1,6 @@
-import {GameConfig, GameCell, GameField, IEnemyEngine, Result, Turn} from "@m8/core";
-import {Factory, RandomHelper} from "@m8/helpers";
-import {PointerObject, TileObject} from "@m8/objects";
+import {GameCell, GameConfig, GameField, IEnemyEngine, Result, SavedGame, Turn} from "@m8/core";
+import {Factory, GameStorage} from "@m8/helpers";
+import {GameMenuButtonObject, PointerObject, TileObject} from "@m8/objects";
 
 export class GameScene extends Phaser.Scene {
 
@@ -9,7 +9,7 @@ export class GameScene extends Phaser.Scene {
 
     private _gameField: GameField;
 
-    private _cells: TileObject[][];
+    private _tiles: TileObject[][];
 
     /** Чей ход в данный момент */
     private _turn: Turn;
@@ -23,38 +23,63 @@ export class GameScene extends Phaser.Scene {
     init(config: GameConfig): void {
         this._turn = Turn.Player;
 
-        this._factory = new Factory(config);
+        this._factory = config.factory;
+        this._gameField = config.gameField;
+        this._enemyEngine = config.engine;
 
-        this._gameField = this._factory.createField();
-        this._enemyEngine = this._factory.createEngine();
-        this._enemyEngine.setField(this._gameField);
+        this._playerSide = {
+            index: config.pointerIndex,
+            score: config.playerScore,
+            text: null
+        };
+
+        this._enemySide = {
+            index: config.pointerIndex,
+            score: config.enemyScore,
+            text: null
+        };
+
+        this._saveGame();
     }
 
     // noinspection JSUnusedGlobalSymbols
     create() {
         this.input.setTopOnly(true);
 
-        this._cells = [];
+        const scoreTextStyle = {fontFamily: "m8", fontSize: 24, fixedWidth: 100, align: "center"};
+
+        this._playerSide.text = this.add.text(100, 100, "", scoreTextStyle);
+        this._enemySide.text = this.add.text(500, 100, "", scoreTextStyle);
+
+        this._tiles = [];
 
         const tweens: any[] = [];
 
         for (let x = 0; x < this._gameField.size; x++) {
 
-            this._cells.push([]);
+            this._tiles.push([]);
 
             for (let y = 0; y < this._gameField.size; y++) {
-                this._cells[x][y] =
-                    this._factory
-                        .createTile(this, x, y)
-                        .setValue(this._gameField.getCell(x, y).value)
-                        .setScale(0, 1)
-                        .disable();
+
+                const cell = this._gameField.getCell(x, y);
+
+                const tile =
+                    this._tiles[x][y] =
+                        this._factory
+                            .createTile(this, x, y)
+                            .setValue(this._gameField.getCell(x, y).value)
+                            .setScale(0, 1)
+                            .disable();
+
+                if (cell.value === 0) {
+                    tile.setDestroyed();
+                }
 
                 tweens.push({
-                    targets: [this._cells[x][y]],
+                    targets: [tile],
                     scaleX: 1,
                     duration: 200,
-                    delay: x * 40 + y * 40 * this._gameField.size
+                    delay: (x + y) * 40
                 });
             }
         }
@@ -66,34 +91,36 @@ export class GameScene extends Phaser.Scene {
         });
     }
 
+    update() {
+        if (this._playerSide.text) {
+            this._playerSide.text.setText(`${this._playerSide.score} очк.`);
+        }
+        if (this._enemySide.text) {
+            this._enemySide.text.setText(`${this._enemySide.score} очк.`);
+        }
+    }
+
     private _startGame() {
         this._gameField.once("cell-taken", this._onTileTaken, this);
 
-        this._cells.forEach(rows => {
+        this._tiles.forEach(rows => {
             rows.forEach(cell => {
-                cell.on("click", () => this._onClickTile(cell.coords[0], cell.coords[1]))
-                    .on("pointerover", () => cell.select())
-                    .on("pointerout", () => cell.deselect());
+
+                if (cell.getValue() !== 0) {
+                    cell.on("click", () => this._onClickTile(cell.coords[0], cell.coords[1]))
+                        .on("pointerover", () => cell.select())
+                        .on("pointerout", () => cell.deselect());
+                }
             });
         });
-
-        this._playerSide = {
-            index: RandomHelper.GenerateIndex(this._gameField.size),
-            score: 0,
-            text: this.add.text(100, 100, "0 очк.", {fontFamily: "m8", fontSize: 24, fixedWidth: 100, align: "center"})
-        };
-
-        this._enemySide = {
-            index: RandomHelper.GenerateIndex(this._gameField.size),
-            score: 0,
-            text: this.add.text(500, 100, "0 очк.", {fontFamily: "m8", fontSize: 24, fixedWidth: 100, align: "center"})
-        };
 
         this._pointer = this._factory.createPointer(this).setStrokeStyle(6, 0x778CA7);
 
         this._pointer.moveToVertical(this._playerSide.index);
 
         this._redrawField();
+
+        this.add.existing(new GameMenuButtonObject(this, 600, 35).on("click", this._onGameMenuClick, this));
     }
 
     private _onTileTaken(x: number, y: number) {
@@ -102,7 +129,7 @@ export class GameScene extends Phaser.Scene {
             return;
         }
 
-        const tile = this._cells[x][y].select();
+        const tile = this._tiles[x][y].select();
 
         setTimeout(
             async () => {
@@ -119,18 +146,14 @@ export class GameScene extends Phaser.Scene {
     private async _makeTurnAsync(tile: TileObject, x: number, y: number): Promise<void> {
 
         let score: number;
-        let text: Phaser.GameObjects.Text;
 
         if (this._turn === Turn.Player) {
             score = this._playerSide.score;
-            text = this._playerSide.text;
         } else {
             score = this._enemySide.score;
-            text = this._enemySide.text;
         }
 
         const newScore = score + tile.getValue();
-        text.setText(`${newScore} очк.`);
 
         if (this._turn === Turn.Player) {
             this._playerSide.score = newScore;
@@ -160,8 +183,6 @@ export class GameScene extends Phaser.Scene {
 
     private async _toggleTurnAsync(cellX: number, cellY: number): Promise<void> {
 
-        const cell = this._cells[cellX][cellY];
-
         await this._pointer.flipAsync(cellX, cellY);
 
         if (this._turn === Turn.Player) {
@@ -177,25 +198,25 @@ export class GameScene extends Phaser.Scene {
     private _redrawField(): void {
         if (this._turn === Turn.Player) {
 
-            for (let x = 0; x < this._cells.length; x++) {
-                for (let y = 0; y < this._cells[x].length; y++) {
+            for (let x = 0; x < this._tiles.length; x++) {
+                for (let y = 0; y < this._tiles[x].length; y++) {
 
                     if (this._playerSide.index != x) {
-                        this._cells[x][y].disable();
+                        this._tiles[x][y].disable();
                     } else {
-                        this._cells[x][y].enable();
+                        this._tiles[x][y].enable();
                     }
                 }
             }
         } else {
 
-            for (let x = 0; x < this._cells.length; x++) {
-                for (let y = 0; y < this._cells[x].length; y++) {
+            for (let x = 0; x < this._tiles.length; x++) {
+                for (let y = 0; y < this._tiles[x].length; y++) {
 
                     if (this._enemySide.index != y) {
-                        this._cells[x][y].disable();
+                        this._tiles[x][y].disable();
                     } else {
-                        this._cells[x][y].enable();
+                        this._tiles[x][y].enable();
                     }
                 }
             }
@@ -227,12 +248,12 @@ export class GameScene extends Phaser.Scene {
 
         const cell = await this._enemyEngine.makeTurnAsync(this._enemySide.index);
 
-        const tile = this._cells[cell.x][cell.y];
-        tile.select();
+        const tile = this._tiles[cell.x][cell.y].select();
 
         return new Promise<void>(async resolve => {
             setTimeout(async () => {
                 await this._makeTurnAsync(tile, cell.x, cell.y);
+                this._saveGame();
                 resolve();
             }, 300);
         });
@@ -251,6 +272,38 @@ export class GameScene extends Phaser.Scene {
         };
 
         this.scene.launch("game-over", result);
+        this.scene.pause();
+    }
+
+    private _saveGame() {
+
+        if (!this._gameField.anyExists || !this._hasAnyMove(this._turn)) {
+            GameStorage.removeGame();
+            return;
+        }
+
+        const params = this._factory.getParams();
+
+        GameStorage.saveGame({
+            size: params.size,
+            difficulty: params.difficulty,
+            score: [this._playerSide.score, this._enemySide.score],
+            index: this._playerSide.index,
+            isNew: false,
+            restart: false,
+            cells: this._gameField.getCells()
+        });
+    }
+
+    private _onGameMenuClick() {
+        this.scene.launch("game-menu");
+
+        const gameMenu = this.scene.get("game-menu");
+
+        gameMenu.events.on("continue", () => {
+            this.scene.resume();
+        });
+
         this.scene.pause();
     }
 }

@@ -34,7 +34,7 @@ export class GameField extends Phaser.Events.EventEmitter {
             this._cells.push([]);
 
             for (let y = 0; y < _size; y++) {
-                this._cells[x].push(new GameCell(x, y, RandomHelper.GenerateValue()));
+                this._cells[x].push(new GameCell(x, y).setValue(RandomHelper.GenerateValue()));
             }
         }
     }
@@ -73,29 +73,19 @@ export class GameField extends Phaser.Events.EventEmitter {
 
         return cell.value;
     }
-}
 
-export class GameCellCollection implements Generator<GameCell> {
+    public getCells(): number[][] {
 
-    constructor(private gameField: GameField) {
+        const cells: number[][] = [];
 
+        for (let x = 0; x < this._size; x++) {
+            cells.push([]);
+            for (let y = 0; y < this._size; y++) {
+                const cell = this.getCell(x, y);
+                cells[x][y] = cell.isDestroyed ? 0 : cell.value;
+            }
+        }
+
+        return cells;
     }
-
-    [Symbol.iterator](): Generator<GameCell, any, unknown> {
-        return undefined;
-    }
-
-    next(...args: [] | [unknown]): IteratorYieldResult<GameCell> | IteratorReturnResult<any> {
-        return undefined;
-    }
-
-    return(value: any): IteratorYieldResult<GameCell> | IteratorReturnResult<any> {
-        return undefined;
-    }
-
-    throw(e: any): IteratorYieldResult<GameCell> | IteratorReturnResult<any> {
-        return undefined;
-    }
-
-
 }

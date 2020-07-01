@@ -23,8 +23,13 @@ export class GameOverScene extends Phaser.Scene {
         });
 
         this.add.existing(
-            new MenuButtonObject(this, 350, 450)
-                .setText("Завершить")
+            new MenuButtonObject(this, 350, 400)
+                .setText("Заново")
+                .on("click", this._onRestart, this));
+
+        this.add.existing(
+            new MenuButtonObject(this, 350, 470)
+                .setText("Выйти")
                 .on("click", this._onComplete, this));
     }
 
@@ -34,6 +39,10 @@ export class GameOverScene extends Phaser.Scene {
 
         this.scene.stop("game");
         this.scene.stop("game-over");
+    }
+
+    private _onRestart() {
+        this.scene.start("prepare-game", {restart: true});
     }
 
     private _getText(): string {

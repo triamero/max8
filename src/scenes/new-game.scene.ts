@@ -1,5 +1,6 @@
-import {Difficulty, GameConfig} from "@m8/core";
+import {Difficulty, GameParameters} from "@m8/core";
 import {MenuButtonObject, SquareButtonObject} from "@m8/objects";
+import {GameStorage} from "@m8/helpers";
 
 export class NewGameScene extends Phaser.Scene {
 
@@ -9,7 +10,7 @@ export class NewGameScene extends Phaser.Scene {
     private _small: SquareButtonObject;
     private _large: SquareButtonObject;
 
-    private _prevGameConfig: GameConfig;
+    private _prevGameParams: GameParameters;
 
     private _textStyle: any = {
         fontSize: 36,
@@ -21,13 +22,7 @@ export class NewGameScene extends Phaser.Scene {
 
     // noinspection JSUnusedGlobalSymbols
     init() {
-        const prevGameJson = localStorage.getItem("game-config");
-
-        if (prevGameJson) {
-            this._prevGameConfig = JSON.parse(prevGameJson);
-        } else {
-            this._prevGameConfig = null;
-        }
+        this._prevGameParams = GameStorage.getGameParams();
     }
 
     // noinspection JSUnusedGlobalSymbols
@@ -42,12 +37,12 @@ export class NewGameScene extends Phaser.Scene {
 
         this.add.existing(new MenuButtonObject(this, 350, 700).setText("Начать игру").on("click", this._startNewGame, this));
 
-        if (this._prevGameConfig) {
-            this._easy.selected = this._prevGameConfig.difficulty === Difficulty.Easy;
-            this._hard.selected = this._prevGameConfig.difficulty === Difficulty.Hard;
+        if (this._prevGameParams) {
+            this._easy.selected = this._prevGameParams.difficulty === Difficulty.Easy;
+            this._hard.selected = this._prevGameParams.difficulty === Difficulty.Hard;
 
-            this._small.selected = this._prevGameConfig.size === 6;
-            this._large.selected = this._prevGameConfig.size === 8;
+            this._small.selected = this._prevGameParams.size === 6;
+            this._large.selected = this._prevGameParams.size === 8;
         } else {
             this._easy.selected = true;
             this._small.selected = true;
@@ -72,13 +67,15 @@ export class NewGameScene extends Phaser.Scene {
 
     private _startNewGame() {
 
-        const config: GameConfig = {
+        const params: GameParameters = {
             difficulty: this._easy.selected ? Difficulty.Easy : Difficulty.Hard,
-            size: this._small.selected ? 6 : 8
+            size: this._small.selected ? 6 : 8,
+            isNew: true,
+            restart: false
         };
 
-        localStorage.setItem("game-config", JSON.stringify(config));
+        GameStorage.saveGameParams(params);
 
-        this.scene.start("game", config);
+        this.scene.start("prepare-game", params);
     }
 }

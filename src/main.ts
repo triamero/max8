@@ -1,5 +1,15 @@
 import * as Phaser from "phaser";
-import {BootScene, GameOverScene, GameScene, HallOfFameScene, MainMenuScene, NewGameScene, TrainingScene} from "./scenes";
+import {
+    BootScene,
+    GameOverScene,
+    GameScene,
+    GameMenuScene,
+    HallOfFameScene,
+    MainMenuScene,
+    NewGameScene,
+    PrepareGameScene,
+    TrainingScene
+} from "./scenes";
 
 class Main extends Phaser.Game {
     constructor() {
@@ -25,6 +35,8 @@ class Main extends Phaser.Game {
         this.scene.add("main-menu", MainMenuScene, false);
         this.scene.add("new-game", NewGameScene, false);
         this.scene.add("training", TrainingScene, false);
+        this.scene.add("prepare-game", PrepareGameScene, false);
+        this.scene.add("game-menu", GameMenuScene, false);
 
         this.scene.start("boot");
     }
