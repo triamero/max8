@@ -73,4 +73,19 @@ export class GameField extends Phaser.Events.EventEmitter {
 
         return cell.value;
     }
+
+    public getCells(): number[][] {
+
+        const cells: number[][] = [];
+
+        for (let x = 0; x < this._size; x++) {
+            cells.push([]);
+            for (let y = 0; y < this._size; y++) {
+                const cell = this.getCell(x, y);
+                cells[x][y] = cell.isDestroyed ? 0 : cell.value;
+            }
+        }
+
+        return cells;
+    }
 }

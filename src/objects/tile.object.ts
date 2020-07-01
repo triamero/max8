@@ -102,6 +102,13 @@ export class TileObject extends ClickableObject {
         return this;
     }
 
+    public setDestroyed(): this {
+        this._destroyed = true;
+        this.disableInteractive();
+        this.setVisible(false);
+        return this;
+    }
+
     public destroyAsync(): Promise<void> {
 
         return new Promise(resolve => {
@@ -111,9 +118,7 @@ export class TileObject extends ClickableObject {
                 duration: 250,
                 ease: "Linear",
                 onComplete: () => {
-                    this._destroyed = true;
-                    this.disableInteractive();
-                    this.setVisible(false);
+                    this.setDestroyed();
                     resolve();
                 }
             })

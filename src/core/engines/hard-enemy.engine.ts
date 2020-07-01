@@ -11,6 +11,11 @@ export class HardEnemyEngine implements IEnemyEngine {
     }
 
     public async makeTurnAsync(index: number): Promise<GameCell> {
+
+        if (this._field == null) {
+            throw new Error("Field is not initialized");
+        }
+
         const row = this._field.getRow(index);
 
         let max: number = -9;

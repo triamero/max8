@@ -1,4 +1,5 @@
 export * from "./clickable.object";
+export * from "./game-menu-button.object";
 export * from "./menu-button.object";
 export * from "./pointer.object";
 export * from "./square-button.object";

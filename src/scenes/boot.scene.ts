@@ -1,5 +1,5 @@
 import * as Phaser from "phaser";
-import {Difficulty, GameConfig} from "@m8/core";
+import {GameStorage} from "@m8/helpers";
 
 export class BootScene extends Phaser.Scene {
 
@@ -10,12 +10,6 @@ export class BootScene extends Phaser.Scene {
     }
 
     create() {
-        const config: GameConfig = {
-            size: 6,
-            difficulty: Difficulty.Easy,
-            isNew: false
-        };
-
-        this.scene.start("main-menu", config);
+        this.scene.start("main-menu");
     }
 }
