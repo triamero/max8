@@ -74,28 +74,3 @@ export class GameField extends Phaser.Events.EventEmitter {
         return cell.value;
     }
 }
-
-export class GameCellCollection implements Generator<GameCell> {
-
-    constructor(private gameField: GameField) {
-
-    }
-
-    [Symbol.iterator](): Generator<GameCell, any, unknown> {
-        return undefined;
-    }
-
-    next(...args: [] | [unknown]): IteratorYieldResult<GameCell> | IteratorReturnResult<any> {
-        return undefined;
-    }
-
-    return(value: any): IteratorYieldResult<GameCell> | IteratorReturnResult<any> {
-        return undefined;
-    }
-
-    throw(e: any): IteratorYieldResult<GameCell> | IteratorReturnResult<any> {
-        return undefined;
-    }
-
-
-}
