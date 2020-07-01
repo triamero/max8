@@ -1,3 +1,4 @@
+import * as Phaser from "phaser";
 import {Difficulty, GameConfig} from "@m8/core";
 
 export class BootScene extends Phaser.Scene {
