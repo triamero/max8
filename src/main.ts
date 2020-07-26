@@ -10,6 +10,7 @@ import {
     PrepareGameScene,
     TrainingScene
 } from "./scenes";
+require("./shared/linq");
 
 class Main extends Phaser.Game {
     constructor() {
