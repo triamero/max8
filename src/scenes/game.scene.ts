@@ -1,4 +1,4 @@
-import {GameCell, GameConfig, GameField, IEnemyEngine, Result, SavedGame, Turn} from "@m8/core";
+import {GameCell, GameConfig, GameField, IEnemyEngine, Result, Turn} from "@m8/core";
 import {Factory, GameStorage} from "@m8/helpers";
 import {GameMenuButtonObject, PointerObject, TileObject} from "@m8/objects";
 

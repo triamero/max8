@@ -6,11 +6,13 @@ export class PrepareGameScene extends Phaser.Scene {
     private _savedGame: SavedGame;
     private _params: GameParameters;
 
+    // noinspection JSUnusedGlobalSymbols
     init(config: GameParameters) {
         this._params = config;
         this._savedGame = null;
     }
 
+    // noinspection JSUnusedGlobalSymbols
     preload() {
         if (!this._params.isNew) {
             this._savedGame = GameStorage.getGame();
@@ -21,6 +23,7 @@ export class PrepareGameScene extends Phaser.Scene {
         }
     }
 
+    // noinspection JSUnusedGlobalSymbols
     create() {
 
         let factory: Factory;
