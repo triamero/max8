@@ -5,7 +5,7 @@ import {GameField} from "@m8/core/game-field";
 export class HardEnemyEngine implements IEnemyEngine {
 
     private _field: GameField;
-    private readonly _depth: number = 2;
+    private readonly _depth: number = 4;
 
     private _paths: GameCell[][];
 
@@ -31,107 +31,74 @@ export class HardEnemyEngine implements IEnemyEngine {
             }
 
             await this._dfsAsync([cell], cell.x, cell.y, true);
-
-            console.log(`count of paths: ${this._paths.length}`);
         }
 
-        console.log("paths", this._paths);
+        console.log("paths:", this._paths.length);
 
-        return await this._findPerfectTurnAsync();
+        return await this._getPerfectTurnAsync();
     }
 
-    private async _findPerfectTurnAsync(): Promise<GameCell> {
+    private async _getPerfectTurnAsync(): Promise<GameCell> {
 
-        const maxLength = Math.max.apply(null, this._paths.map(x => x.length));
+        const maxLength = this._paths.max(x => x.length);
 
         console.log("max length:", maxLength);
 
-        let weights: { player: number, enemy: number, cell: GameCell }[] = [];
+        const map = this._paths
+            .filter(x => x.length >= maxLength)
+            .map(path => {
 
-        // сортировка по убыванию
-        this._paths = this._paths.sort((a, b) => a.length > b.length ? -1 : a.length < b.length ? 1 : 0);
+                const playerTurns = path.filter((x, index) => index % 2 !== 0);
 
-        for (let i = 0; i < this._paths.length; i++) {
-            const path = this._paths[i];
+                let playerPoints = 0;
+                if (playerTurns.length > 0) {
+                    playerPoints = playerTurns.sum(x => x.value) / playerTurns.length;
+                }
 
-            if (path.length < maxLength) {
-                break;
-            }
-
-            const playerPoints = this._getSum(path.filter((val, index) => index % 2 != 0));
-            const enemyPoints = this._getSum(path.filter((val, index) => index % 2 == 0));
-
-            weights.push({
-                cell: this._paths[i][0],
-                player: playerPoints,
-                enemy: enemyPoints
-            });
-        }
-
-        weights = weights
+                return {
+                    playerPoints: playerPoints,
+                    enemyPoints: path.filter((x, index) => index % 2 === 0).sum(x => x.value),
+                    path: path
+                };
+            })
+            // сортировка по двум полям по убыванию
             .sort((a, b) => {
-                // сортировка по убыванию
-                if (a.enemy > b.enemy) {
+                if (a.enemyPoints > b.enemyPoints) {
                     return -1;
-                } else if (a.enemy < b.enemy) {
+                } else if (a.enemyPoints < b.enemyPoints) {
+                    return 1;
+                }
+
+                if (a.playerPoints > b.playerPoints) {
+                    return -1;
+                } else if (a.playerPoints < b.playerPoints) {
                     return 1;
                 }
 
                 return 0;
             });
 
-        const bestEnemyTurn = weights[0].enemy;
+        console.log("first path:", this.stringifyPath(map[0].path));
 
-        const map = weights
-            .filter(x => x.enemy == bestEnemyTurn)
-            .reduce(
-                (prev, curr) => {
-                    const key = `${curr.cell.x}_${curr.cell.y}`;
+        let bestPath = map.find(x => x.enemyPoints > x.playerPoints * x.path.length)?.path;
 
-                    if (!prev.has(key)) {
-                        prev.set(key, []);
-                    }
-
-                    prev.get(key).push(curr);
-
-                    return prev;
-                },
-                new Map<string, PathWeight[]>());
-
-        let minPlayerValueKey = null;
-        let minPlayerValue = 10000;
-
-        for (let key of map.keys()) {
-            const turns = map.get(key);
-            const maxPlayerValue = Math.max.apply(null, turns.map(x => x.player));
-
-            if (maxPlayerValue < minPlayerValue) {
-                minPlayerValue = maxPlayerValue;
-                minPlayerValueKey = key;
-            }
+        if (!bestPath) {
+            console.log("path with enemyPoints > playerPoints not found, took first");
+            bestPath = map[0].path;
         }
 
-        return map.get(minPlayerValueKey)[0].cell;
-    }
+        console.log("best path:", this.stringifyPath(bestPath));
 
-    private _getSum(cells: GameCell[]): number {
-
-        if (cells.length < 1) {
-            return 0;
-        }
-
-        return cells.map(x => x.value).reduce((prev, curr) => prev + curr);
+        return bestPath[0];
     }
 
     private async _dfsAsync(path: GameCell[], cellX: number, cellY: number, byColumn: boolean): Promise<void> {
 
         if (path.length >= this._depth) {
             this._paths.push([...path]);
-            path.pop();
             return;
         } else if (this._field.getExistsCount() == path.length) {
             this._paths.push([...path]);
-            path.pop();
             return;
         }
 
@@ -141,48 +108,65 @@ export class HardEnemyEngine implements IEnemyEngine {
             const column = this._field.getColumn(cellX);
 
             for (let y = 0; y < column.length; y++) {
-                if (column[y].isDestroyed) {
+
+                const cell = column[y];
+
+                if (cell.isDestroyed) {
                     continue;
                 }
 
-                if (path.some(z => z.x === cellX && z.y === y)) {
+                if (path.some(z => z.x === cell.x && z.y === cell.y)) {
                     continue;
                 }
                 anyExists = true;
 
-                path.push(column[y]);
+                path.push(cell);
 
                 await this._dfsAsync(path, cellX, y, !byColumn);
+
+                path.pop();
             }
         } else {
             const row = this._field.getRow(cellY);
 
             for (let x = 0; x < row.length; x++) {
-                if (row[x].isDestroyed) {
+
+                const cell = row[x];
+
+                if (cell.isDestroyed) {
                     continue;
                 }
 
-                if (path.some(z => z.x === x && z.y === cellY)) {
+                if (path.some(z => z.x === cell.x && z.y === cell.y)) {
                     continue;
                 }
                 anyExists = true;
 
-                path.push(row[x]);
+                path.push(cell);
 
                 await this._dfsAsync(path, x, cellY, !byColumn);
+
+                path.pop();
             }
         }
 
         if (!anyExists) {
             this._paths.push([...path]);
-            path.pop();
             return;
         }
     }
-}
 
-interface PathWeight {
-    player: number;
-    enemy: number;
-    cell: GameCell;
+    private stringifyPath(path: GameCell[]): string {
+        return path
+            .map(x => `[${x.x};${x.y}](${x.value})`)
+            .reduce(
+                (prev, curr) => {
+                    if (prev.length > 0) {
+                        prev += "=>";
+                    }
+                    prev += curr;
+                    return prev;
+                },
+                "");
+    }
 }
