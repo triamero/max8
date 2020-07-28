@@ -1,3 +1,4 @@
+// noinspection TypeScriptPreferShortImport
 import {IEnemyEngine} from "./enemy.engine";
 import {GameCell} from "@m8/core/game-cell";
 import {GameField} from "@m8/core/game-field";
@@ -35,10 +36,10 @@ export class HardEnemyEngine implements IEnemyEngine {
 
         console.log("paths:", this._paths.length);
 
-        return await this._getPerfectTurnAsync();
+        return await this._getBestTurnAsync();
     }
 
-    private async _getPerfectTurnAsync(): Promise<GameCell> {
+    private async _getBestTurnAsync(): Promise<GameCell> {
 
         const maxLength = this._paths.max(x => x.length);
 
@@ -48,15 +49,8 @@ export class HardEnemyEngine implements IEnemyEngine {
             .filter(x => x.length >= maxLength)
             .map(path => {
 
-                const playerTurns = path.filter((x, index) => index % 2 !== 0);
-
-                let playerPoints = 0;
-                if (playerTurns.length > 0) {
-                    playerPoints = playerTurns.sum(x => x.value) / playerTurns.length;
-                }
-
                 return {
-                    playerPoints: playerPoints,
+                    playerPoints: path.filter((x, index) => index % 2 !== 0).sum(x => x.value),
                     enemyPoints: path.filter((x, index) => index % 2 === 0).sum(x => x.value),
                     path: path
                 };
@@ -80,7 +74,7 @@ export class HardEnemyEngine implements IEnemyEngine {
 
         console.log("first path:", this.stringifyPath(map[0].path));
 
-        let bestPath = map.find(x => x.enemyPoints > x.playerPoints * x.path.length)?.path;
+        let bestPath = map.find(x => x.enemyPoints > x.playerPoints)?.path;
 
         if (!bestPath) {
             console.log("path with enemyPoints > playerPoints not found, took first");
@@ -104,50 +98,21 @@ export class HardEnemyEngine implements IEnemyEngine {
 
         let anyExists = false;
 
-        if (byColumn) {
-            const column = this._field.getColumn(cellX);
+        let cells: GameCell[] = byColumn
+            ? this._field.getColumn(cellX)
+            : this._field.getRow(cellY);
 
-            for (let y = 0; y < column.length; y++) {
-
-                const cell = column[y];
-
-                if (cell.isDestroyed) {
-                    continue;
-                }
-
-                if (path.some(z => z.x === cell.x && z.y === cell.y)) {
-                    continue;
-                }
-                anyExists = true;
-
-                path.push(cell);
-
-                await this._dfsAsync(path, cellX, y, !byColumn);
-
-                path.pop();
+        for (let cell of cells.filter(x => !x.isDestroyed)) {
+            if (path.some(z => z.x === cell.x && z.y === cell.y)) {
+                continue;
             }
-        } else {
-            const row = this._field.getRow(cellY);
+            anyExists = true;
 
-            for (let x = 0; x < row.length; x++) {
+            path.push(cell);
 
-                const cell = row[x];
+            await this._dfsAsync(path, cell.x, cell.y, !byColumn);
 
-                if (cell.isDestroyed) {
-                    continue;
-                }
-
-                if (path.some(z => z.x === cell.x && z.y === cell.y)) {
-                    continue;
-                }
-                anyExists = true;
-
-                path.push(cell);
-
-                await this._dfsAsync(path, x, cellY, !byColumn);
-
-                path.pop();
-            }
+            path.pop();
         }
 
         if (!anyExists) {
