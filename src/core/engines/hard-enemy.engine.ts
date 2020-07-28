@@ -24,17 +24,11 @@ export class HardEnemyEngine implements IEnemyEngine {
 
         const row = this._field.getRow(index);
 
-        for (let i = 0; i < row.length; i++) {
-            const cell = row[i];
-
-            if (cell.isDestroyed) {
-                continue;
-            }
-
+        for (let cell of row.filter(x => !x.isDestroyed)) {
             await this._dfsAsync([cell], cell.x, cell.y, true);
         }
 
-        console.log("paths:", this._paths.length);
+        // console.log("paths:", this._paths.length);
 
         return await this._getBestTurnAsync();
     }
@@ -43,47 +37,82 @@ export class HardEnemyEngine implements IEnemyEngine {
 
         const maxLength = this._paths.max(x => x.length);
 
-        console.log("max length:", maxLength);
+        // console.log("max length:", maxLength);
+        const paths = this._paths.filter(x => x.length === maxLength);
 
-        const map = this._paths
-            .filter(x => x.length >= maxLength)
-            .map(path => {
+        const bestScoresMap: Map<string, number[]> = new Map<string, number[]>();
 
-                return {
-                    playerPoints: path.filter((x, index) => index % 2 !== 0).sum(x => x.value),
-                    enemyPoints: path.filter((x, index) => index % 2 === 0).sum(x => x.value),
-                    path: path
-                };
-            })
-            // сортировка по двум полям по убыванию
+        for (let path of paths) {
+
+            const firstCell = path[0];
+
+            const firstCellKey = `${firstCell.x}_${firstCell.y}`;
+
+            if (!bestScoresMap.has(firstCellKey)) {
+                bestScoresMap.set(firstCellKey, []);
+            }
+
+            let scores = bestScoresMap.get(firstCellKey);
+
+            for (let i = 0; i < path.length; i++) {
+                const cell = path[i];
+
+                while (scores.length < i + 1) {
+                    scores.push(cell.value);
+                }
+
+                if (scores[i] < cell.value) {
+                    scores[i] = cell.value;
+                }
+            }
+        }
+
+        // console.log("map:", bestScoresMap);
+
+        const bestScores = [];
+
+        for (let key of bestScoresMap.keys()) {
+            const playerScore = bestScoresMap.get(key).filter((x, i) => i % 2 !== 0).sum(x => x);
+            const enemyScore = bestScoresMap.get(key).filter((x, i) => i % 2 === 0).sum(x => x);
+            const coords = key.split('_');
+
+            bestScores.push({
+                playerScore: playerScore,
+                enemyScore: enemyScore,
+                cell: this._field.getCell(+coords[0], +coords[1])
+            });
+        }
+
+        const map = bestScores
             .sort((a, b) => {
-                if (a.enemyPoints > b.enemyPoints) {
+                if (a.enemyScore > b.enemyScore) {
                     return -1;
-                } else if (a.enemyPoints < b.enemyPoints) {
+                } else if (a.enemyScore < b.enemyScore) {
                     return 1;
                 }
 
-                if (a.playerPoints > b.playerPoints) {
+                if (a.playerScore > b.playerScore) {
                     return -1;
-                } else if (a.playerPoints < b.playerPoints) {
+                } else if (a.playerScore < b.playerScore) {
                     return 1;
                 }
 
                 return 0;
             });
 
-        console.log("first path:", this.stringifyPath(map[0].path));
 
-        let bestPath = map.find(x => x.enemyPoints > x.playerPoints)?.path;
+        // console.log("first path cell:", this.stringify(map[0].cell));
 
-        if (!bestPath) {
-            console.log("path with enemyPoints > playerPoints not found, took first");
-            bestPath = map[0].path;
+        let bestPathCell = map.find(x => x.enemyScore > x.playerScore)?.cell;
+
+        if (!bestPathCell) {
+            // console.log("path with enemyPoints > playerPoints not found, took first");
+            bestPathCell = map[0].cell;
         }
 
-        console.log("best path:", this.stringifyPath(bestPath));
+        // console.log("best turn:", this.stringify(bestPathCell));
 
-        return bestPath[0];
+        return bestPathCell;
     }
 
     private async _dfsAsync(path: GameCell[], cellX: number, cellY: number, byColumn: boolean): Promise<void> {
@@ -96,11 +125,11 @@ export class HardEnemyEngine implements IEnemyEngine {
             return;
         }
 
-        let anyExists = false;
-
         let cells: GameCell[] = byColumn
             ? this._field.getColumn(cellX)
             : this._field.getRow(cellY);
+
+        let anyExists = false;
 
         for (let cell of cells.filter(x => !x.isDestroyed)) {
             if (path.some(z => z.x === cell.x && z.y === cell.y)) {
@@ -121,17 +150,7 @@ export class HardEnemyEngine implements IEnemyEngine {
         }
     }
 
-    private stringifyPath(path: GameCell[]): string {
-        return path
-            .map(x => `[${x.x};${x.y}](${x.value})`)
-            .reduce(
-                (prev, curr) => {
-                    if (prev.length > 0) {
-                        prev += "=>";
-                    }
-                    prev += curr;
-                    return prev;
-                },
-                "");
+    private stringify(cell: GameCell): string {
+        return `[${cell.x};${cell.y}](${cell.value})`;
     }
 }
