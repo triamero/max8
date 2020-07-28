@@ -1,6 +1,8 @@
 import {MenuButtonObject} from "@m8/objects";
 
 export class HallOfFameScene extends Phaser.Scene {
+
+    // noinspection JSUnusedGlobalSymbols
     create() {
         this.add.text(200, 300, "YOU'RE NOT SUPPOSED TO BE HERE. GO AWAY", {
             fixedWidth: 300,

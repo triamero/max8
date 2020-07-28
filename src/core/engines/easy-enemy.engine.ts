@@ -16,24 +16,12 @@ export class EasyEnemyEngine implements IEnemyEngine {
             throw new Error("Field is not initialized");
         }
 
+        return new Promise<GameCell>(resolve => resolve(this.makeTurn(index)));
+    }
+
+    private makeTurn(index: number): GameCell {
         const row = this._field.getRow(index);
 
-        let max: number = -9;
-        let maxIndex: number = -1;
-
-        for (let i = 0; i < row.length; i++) {
-            const cell = row[i];
-
-            if (cell.isDestroyed) {
-                continue;
-            }
-
-            if (cell.value > max) {
-                max = cell.value;
-                maxIndex = i;
-            }
-        }
-
-        return new Promise<GameCell>(resolve => resolve(row[maxIndex]));
+        return row.filter(x => !x.isDestroyed).orderByDesc(x => x.value)[0];
     }
 }

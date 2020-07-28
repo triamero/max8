@@ -30,11 +30,27 @@ export class GameField extends Phaser.Events.EventEmitter {
         super();
         this._cells = [];
 
+        // создание ячеек
         for (let x = 0; x < _size; x++) {
             this._cells.push([]);
-
             for (let y = 0; y < _size; y++) {
-                this._cells[x].push(new GameCell(x, y).setValue(RandomHelper.GenerateValue()));
+                this._cells[x].push(new GameCell(x, y));
+            }
+        }
+
+        // заполнение элементов главной диагонали и выше её
+        for (let x = 0; x < _size; x++) {
+            for (let y = 0; y <= x; y++) {
+                this._cells[x][y].setValue(RandomHelper.GenerateValue());
+            }
+        }
+
+        // заполнение элементов ниже главной диагонали
+        for (let x = 0; x < _size; x++) {
+            for (let y = 0; y < _size; y++) {
+                if (y > x) {
+                    this._cells[x][y].setValue(-1 * this._cells[y][x].value);
+                }
             }
         }
     }
@@ -87,5 +103,24 @@ export class GameField extends Phaser.Events.EventEmitter {
         }
 
         return cells;
+    }
+
+    /**
+     * Получить количество существующих ячеек
+     */
+    public getExistsCount(): number {
+
+        let count = 0;
+
+        for (let x = 0; x < this._size; x++) {
+            for (let y = 0; y < this._size; y++) {
+
+                if (!this._cells[x][y].isDestroyed) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
     }
 }

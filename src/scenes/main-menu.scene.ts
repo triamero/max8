@@ -2,6 +2,7 @@ import {MenuButtonObject} from "@m8/objects";
 
 export class MainMenuScene extends Phaser.Scene {
 
+    // noinspection JSUnusedGlobalSymbols
     create() {
 
         let newGame = new MenuButtonObject(this, 350, 250)

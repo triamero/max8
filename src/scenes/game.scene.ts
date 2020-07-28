@@ -1,4 +1,4 @@
-import {GameCell, GameConfig, GameField, IEnemyEngine, Result, SavedGame, Turn} from "@m8/core";
+import {GameCell, GameConfig, GameField, IEnemyEngine, Result, Turn} from "@m8/core";
 import {Factory, GameStorage} from "@m8/helpers";
 import {GameMenuButtonObject, PointerObject, TileObject} from "@m8/objects";
 
@@ -263,12 +263,8 @@ export class GameScene extends Phaser.Scene {
         this._pointer.setVisible(false);
 
         const result: Result = {
-            boardEmpty: !this._gameField.anyExists,
-
             playerScore: this._playerSide.score,
-            enemyScore: this._enemySide.score,
-
-            turn: this._turn
+            enemyScore: this._enemySide.score
         };
 
         this.scene.launch("game-over", result);
