@@ -263,12 +263,8 @@ export class GameScene extends Phaser.Scene {
         this._pointer.setVisible(false);
 
         const result: Result = {
-            boardEmpty: !this._gameField.anyExists,
-
             playerScore: this._playerSide.score,
-            enemyScore: this._enemySide.score,
-
-            turn: this._turn
+            enemyScore: this._enemySide.score
         };
 
         this.scene.launch("game-over", result);

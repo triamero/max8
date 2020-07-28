@@ -1,4 +1,4 @@
-import {Result, Turn} from "@m8/core";
+import {Result} from "@m8/core";
 import {MenuButtonObject} from "@m8/objects";
 
 export class GameOverScene extends Phaser.Scene {
@@ -46,28 +46,17 @@ export class GameOverScene extends Phaser.Scene {
     }
 
     private _getText(): string {
-
-        if (this._result.boardEmpty) {
-            // у игрока больше очков чем у соперника - игрок победил
-            if (this._result.enemyScore < this._result.playerScore) {
-                return "Вы победили!";
-            }
-
-            // у соперника больше очков чем у игрока - соперник победил
-            if (this._result.enemyScore > this._result.playerScore) {
-                return "Вы проиграли";
-            }
-
-            // ничья
-            return "Ничья";
+        // у игрока больше очков чем у соперника - игрок победил
+        if (this._result.enemyScore < this._result.playerScore) {
+            return "Вы победили!";
         }
 
-        // игроку некуда ходить - соперник победил
-        if (this._result.turn === Turn.Player) {
+        // у соперника больше очков чем у игрока - соперник победил
+        if (this._result.enemyScore > this._result.playerScore) {
             return "Вы проиграли";
         }
 
-        // сопернику некуда ходить - игрок победил
-        return "Вы победили!";
+        // ничья
+        return "Ничья";
     }
 }
