@@ -8,7 +8,8 @@ import {
     MainMenuScene,
     NewGameScene,
     PrepareGameScene,
-    TrainingScene
+    TrainingScene,
+    NewAchievementScene
 } from "./scenes";
 require("./shared/linq");
 
@@ -34,6 +35,7 @@ class Main extends Phaser.Game {
         this.scene.add("game-over", GameOverScene, false);
         this.scene.add("hall-of-fame", HallOfFameScene, false);
         this.scene.add("main-menu", MainMenuScene, false);
+        this.scene.add("new-achievement", NewAchievementScene, false);
         this.scene.add("new-game", NewGameScene, false);
         this.scene.add("training", TrainingScene, false);
         this.scene.add("prepare-game", PrepareGameScene, false);

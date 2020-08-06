@@ -29,6 +29,8 @@ export class MainMenuScene extends Phaser.Scene {
         if (!localStorage.getItem("saved-game")) {
             continueGame.disable();
         }
+
+        this.scene.launch("new-achievement");
     }
 
     private _onContinue() {
