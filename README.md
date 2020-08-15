@@ -2,6 +2,10 @@
 
 # Releases:
 
+## 1.3.0
+- achievements implemented
+- fix color mistakes
+
 ## 1.2.0
 - hard enemy implemented
 - performance improvements
