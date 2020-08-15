@@ -1,5 +1,6 @@
-import {Result} from "@m8/core";
+import {Difficulty, Result} from "@m8/core";
 import {MenuButtonObject} from "@m8/objects";
+import {AchievementsStorage} from "@m8/helpers";
 
 export class GameOverScene extends Phaser.Scene {
 
@@ -48,15 +49,24 @@ export class GameOverScene extends Phaser.Scene {
     private _getText(): string {
         // у игрока больше очков чем у соперника - игрок победил
         if (this._result.enemyScore < this._result.playerScore) {
+
+            if (this._result.difficulty === Difficulty.Easy) {
+                AchievementsStorage.give(3);
+            } else if (this._result.difficulty === Difficulty.Hard) {
+                AchievementsStorage.give(4);
+            }
+
             return "Вы победили!";
         }
 
         // у соперника больше очков чем у игрока - соперник победил
         if (this._result.enemyScore > this._result.playerScore) {
+            AchievementsStorage.give(6);
             return "Вы проиграли";
         }
 
         // ничья
+        AchievementsStorage.give(5);
         return "Ничья";
     }
 }

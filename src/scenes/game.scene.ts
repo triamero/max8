@@ -1,5 +1,5 @@
 import {GameCell, GameConfig, GameField, IEnemyEngine, Result, Turn} from "@m8/core";
-import {Factory, GameStorage} from "@m8/helpers";
+import {AchievementsStorage, Factory, GameStorage} from "@m8/helpers";
 import {GameMenuButtonObject, PointerObject, TileObject} from "@m8/objects";
 
 export class GameScene extends Phaser.Scene {
@@ -130,6 +130,12 @@ export class GameScene extends Phaser.Scene {
         }
 
         const tile = this._tiles[x][y].select();
+
+        if (tile.getValue() === 8) {
+            AchievementsStorage.give(1);
+        } else if (tile.getValue() == -8) {
+            AchievementsStorage.give(2);
+        }
 
         setTimeout(
             async () => {

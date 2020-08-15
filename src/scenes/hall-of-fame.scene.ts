@@ -1,9 +1,13 @@
 import {MenuButtonObject} from "@m8/objects";
+import {AchievementsStorage} from "@m8/helpers";
 
 export class HallOfFameScene extends Phaser.Scene {
 
     // noinspection JSUnusedGlobalSymbols
     create() {
+
+        AchievementsStorage.give(7);
+
         this.add.text(200, 300, "YOU'RE NOT SUPPOSED TO BE HERE. GO AWAY", {
             fixedWidth: 300,
             fontSize: "24px",

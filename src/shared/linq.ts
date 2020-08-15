@@ -8,6 +8,8 @@ interface Array<T> {
     orderBy(selector: (value: T) => any): this;
 
     orderByDesc(selector: (value: T) => any): this;
+
+    toMap<TKey, TValue>(keySelector: (value: T) => TKey, valueSelector: (value: T) => TValue): Map<TKey, TValue>;
 }
 
 
@@ -54,5 +56,20 @@ Array.prototype.orderByDesc = function (selector) {
 
         return 0;
     });
+};
+
+Array.prototype.toMap = function (keySelector, valueSelector) {
+    const result = new Map();
+
+    this.forEach(item => {
+        const key = keySelector(item);
+
+        if (result.has(key)) {
+            throw Error(`An item with the same key '${key}' already added`);
+        }
+        result.set(key, valueSelector(item));
+    });
+
+    return result;
 };
 
