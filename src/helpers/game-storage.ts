@@ -1,4 +1,4 @@
-import {Difficulty, GameField, GameParameters, SavedGame} from "@m8/core";
+import {GameParameters, SavedGame} from "@m8/core";
 
 const GameKey = "saved-game";
 const GameInitKey = "saved-game-initial";

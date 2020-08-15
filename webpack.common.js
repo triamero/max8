@@ -2,6 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const minifyJson = require("node-json-minify");
 
 module.exports = {
 
@@ -43,8 +44,25 @@ module.exports = {
         new webpack.NamedModulesPlugin(),
         new CopyWebpackPlugin([
             {
-                from: "assets", //Will resolve to RepoDir/src/assets
-                to: "./" //Copies all files from above dest to dist/
+                // Will resolve to RepoDir/assets
+                from: "assets",
+
+                // Copies all files from above dest to dist/
+                to: "./",
+
+                // Minify json files
+                transform(content, path) {
+                    if (!path.toLowerCase().endsWith(".json")) {
+                        return Promise.resolve(content);
+                    }
+                    return minifyJson(content.toString());
+                }
+            },
+            {
+                // Will resolve to RepoDir/libs
+                from: "libs",
+                // Copies all files from above dest to dist/
+                to: "./"
             }
         ])
     ]

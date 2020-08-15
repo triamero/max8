@@ -1,3 +1,4 @@
+export * from "./achievement";
 export * from "./difficulty";
 export * from "./direction";
 export * from "./engines";

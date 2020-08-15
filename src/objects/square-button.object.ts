@@ -16,7 +16,7 @@ export class SquareButtonObject extends ClickableObject {
         if (value) {
             this._selected = true;
             this._img.setTint(0x555555, 0x555555, 0xffffff, 0xffffff);
-            this._graphics.lineStyle(5, 0xBAB580, 0.75);
+            this._graphics.lineStyle(5, 0xaaaaaa, 0.75);
             this._graphics.strokeRoundedRect(-86, -86, 172, 172, 45);
         } else {
             this._selected = false;

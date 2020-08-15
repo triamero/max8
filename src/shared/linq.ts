@@ -5,9 +5,13 @@ interface Array<T> {
 
     sum(selector: (value: T) => number): number;
 
+    count(predicate: (value: T) => boolean): number;
+
     orderBy(selector: (value: T) => any): this;
 
     orderByDesc(selector: (value: T) => any): this;
+
+    toMap<TKey, TValue>(keySelector: (value: T) => TKey, valueSelector: (value: T) => TValue): Map<TKey, TValue>;
 }
 
 
@@ -24,6 +28,19 @@ Array.prototype.sum = function (selector) {
         return 0;
     }
     return this.reduce((prev, curr) => prev += selector(curr), 0);
+};
+
+Array.prototype.count = function (predicate) {
+
+    let result = 0;
+
+    for (let i = 0; i < this.length; i++) {
+        if (predicate(this[i])) {
+            result++;
+        }
+    }
+
+    return result;
 };
 
 Array.prototype.orderBy = function (selector) {
@@ -54,5 +71,20 @@ Array.prototype.orderByDesc = function (selector) {
 
         return 0;
     });
+};
+
+Array.prototype.toMap = function (keySelector, valueSelector) {
+    const result = new Map();
+
+    this.forEach(item => {
+        const key = keySelector(item);
+
+        if (result.has(key)) {
+            throw Error(`An item with the same key '${key}' already added`);
+        }
+        result.set(key, valueSelector(item));
+    });
+
+    return result;
 };
 

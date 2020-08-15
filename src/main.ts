@@ -8,7 +8,8 @@ import {
     MainMenuScene,
     NewGameScene,
     PrepareGameScene,
-    TrainingScene
+    TrainingScene,
+    NewAchievementScene
 } from "./scenes";
 require("./shared/linq");
 
@@ -34,6 +35,7 @@ class Main extends Phaser.Game {
         this.scene.add("game-over", GameOverScene, false);
         this.scene.add("hall-of-fame", HallOfFameScene, false);
         this.scene.add("main-menu", MainMenuScene, false);
+        this.scene.add("new-achievement", NewAchievementScene, false);
         this.scene.add("new-game", NewGameScene, false);
         this.scene.add("training", TrainingScene, false);
         this.scene.add("prepare-game", PrepareGameScene, false);
@@ -46,19 +48,3 @@ class Main extends Phaser.Game {
 window.onload = () => {
     const GameApp: Phaser.Game = new Main();
 };
-
-
-/*
-* Ачивки:
-* ГТО - пройти обучение
-* Первая кровь - победить на низком уровне сложности
-* Последняя кровь - победить на высоком уровне сложности
-* AI lives matter - проиграть 10 раз
-* Я отсюда никогда не выберусь - противник не оставил игроку возможности для хода
-* Выхода нет - не оставить сопернику возможности для хода
-* Нарцисс - зайти на сцену достижений
-* Так можно было?! - завершить игру ничьей
-* Сапер - завершить игру, не взяв ни одного отрицательного числа
-* Моя прелесть - взять число 8
-* Они украли мою прелесть! - взять число -8
-*/
