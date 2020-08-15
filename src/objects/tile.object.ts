@@ -35,7 +35,7 @@ export class TileObject extends ClickableObject {
             .setAlpha(0.9);
 
         this._bound = scene.add.graphics()
-            .lineStyle(5, 0xBAB580)
+            .lineStyle(5, 0xaaaaaa)
             .strokeRoundedRect(-width / 2, -height / 2, width, height, 23)
             .setVisible(false);
 

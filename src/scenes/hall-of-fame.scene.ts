@@ -32,8 +32,6 @@ export class HallOfFameScene extends Phaser.Scene {
 
                 scrollMode: 0,
 
-                background: this.rexUI.add.roundRectangle(0, 0, 20, 10, 10, 0x2e3c4c),
-
                 table: {
                     cellWidth: undefined,
                     cellHeight: 110,
@@ -111,7 +109,10 @@ export class HallOfFameScene extends Phaser.Scene {
         this.add.existing(
             new MenuButtonObject(this, 350, 730)
                 .setText("УЙТИ")
-                .on("click", () => this.scene.switch("main-menu")));
+                .on("click", () => {
+                    this.scene.start("main-menu");
+                    this.scene.stop();
+                }));
     }
 
     private _createItems(): Achievement[] {
