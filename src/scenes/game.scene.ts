@@ -263,6 +263,7 @@ export class GameScene extends Phaser.Scene {
         this._pointer.setVisible(false);
 
         const result: Result = {
+            difficulty: this._factory.getParams().difficulty,
             playerScore: this._playerSide.score,
             enemyScore: this._enemySide.score
         };
