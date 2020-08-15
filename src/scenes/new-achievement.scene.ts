@@ -17,23 +17,19 @@ export class NewAchievementScene extends Phaser.Scene {
 
     // noinspection JSUnusedGlobalSymbols
     create() {
-        this._back = this.add.image(350, 100, "ach-back").setScale(0, 1);
-        this._end = this.add.image(350, 100, "ach-end").setAlpha(0);
-        this._icon = this.add.image(350, 100, "ach-icon").setAlpha(0);
+        this._back = this.add.image(350, 75, "ach-back").setScale(0, 1);
+        this._end = this.add.image(350, 75, "ach-end").setAlpha(0);
+        this._icon = this.add.image(350, 75, "ach-icon").setAlpha(0);
 
-        this._title = this.add.text(220, 75, "Достижение получено", {
+        this._title = this.add.text(220, 50, "Достижение получено", {
             fontSize: 24,
             fontFamily: "m8",
-            color: "#cccccc",
-            //fixedWidth: 74,
-            align: "center"
+            color: "#cccccc"
         }).setAlpha(0);
-        this._text = this.add.text(220, 105, "", {
+        this._text = this.add.text(220, 80, "", {
             fontSize: 18,
             fontFamily: "m8",
-            color: "#ffffff",
-            //fixedWidth: 74,
-            align: "center"
+            color: "#ffffff"
         }).setAlpha(0);
 
         this._myAchs = AchievementsStorage.getMy();

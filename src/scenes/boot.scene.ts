@@ -12,8 +12,11 @@ export class BootScene extends Phaser.Scene {
         this.load.image("ach-icon", "dist/ach-icon.png");
         this.load.image("ach-back", "dist/ach-back.png");
         this.load.image("ach-end", "dist/ach-end.png");
+        this.load.image("ach-icon-locked", "dist/ach-icon-locked.png");
 
         this.load.json("achievements", "dist/achs.json");
+
+        this.load.scenePlugin({key: "rexuiplugin", url: "dist/rexuiplugin.min.js", sceneKey: 'rexUI'});
     }
 
     // noinspection JSUnusedGlobalSymbols

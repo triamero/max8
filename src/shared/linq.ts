@@ -5,6 +5,8 @@ interface Array<T> {
 
     sum(selector: (value: T) => number): number;
 
+    count(predicate: (value: T) => boolean): number;
+
     orderBy(selector: (value: T) => any): this;
 
     orderByDesc(selector: (value: T) => any): this;
@@ -26,6 +28,19 @@ Array.prototype.sum = function (selector) {
         return 0;
     }
     return this.reduce((prev, curr) => prev += selector(curr), 0);
+};
+
+Array.prototype.count = function (predicate) {
+
+    let result = 0;
+
+    for (let i = 0; i < this.length; i++) {
+        if (predicate(this[i])) {
+            result++;
+        }
+    }
+
+    return result;
 };
 
 Array.prototype.orderBy = function (selector) {

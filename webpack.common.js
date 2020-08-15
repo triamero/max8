@@ -44,7 +44,7 @@ module.exports = {
         new webpack.NamedModulesPlugin(),
         new CopyWebpackPlugin([
             {
-                // Will resolve to RepoDir/src/assets
+                // Will resolve to RepoDir/assets
                 from: "assets",
 
                 // Copies all files from above dest to dist/
@@ -57,6 +57,12 @@ module.exports = {
                     }
                     return minifyJson(content.toString());
                 }
+            },
+            {
+                // Will resolve to RepoDir/libs
+                from: "libs",
+                // Copies all files from above dest to dist/
+                to: "./"
             }
         ])
     ]

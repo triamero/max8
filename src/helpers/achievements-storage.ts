@@ -1,3 +1,5 @@
+import {Achievement} from "@m8/core";
+
 const myKey = "my-achs";
 
 export class AchievementsStorage {
@@ -34,11 +36,16 @@ export class AchievementsStorage {
         return [...this._my];
     }
 
-    public static getById(id: number): { name: string, description: string } {
-        if (!this._map.get(id)?.enabled) {
-            return null;
+    public static getById(id: number): Achievement {
+        const ach = this._map.get(id);
+
+        return {
+            id: id,
+            name: ach.name,
+            description: ach.description,
+            enabled: ach.enabled,
+            unlocked: this._my[id] > 0
         }
-        return this._map.get(id);
     }
 
     public static give(id: number): void {
