@@ -65,7 +65,8 @@ export class PrepareGameScene extends Phaser.Scene {
             engine,
             pointerIndex,
             playerScore,
-            enemyScore
+            enemyScore,
+            difficulty: this._params.difficulty
         };
 
         this.scene.start("game", config);

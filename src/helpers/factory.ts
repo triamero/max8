@@ -1,3 +1,4 @@
+import * as Phaser from "phaser";
 import {Difficulty, EasyEnemyEngine, GameParameters, GameField, HardEnemyEngine, IEnemyEngine} from "@m8/core";
 import {PointerObject, TileObject} from "@m8/objects";
 

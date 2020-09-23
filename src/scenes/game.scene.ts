@@ -1,9 +1,11 @@
-import {GameCell, GameConfig, GameField, IEnemyEngine, Result, Turn} from "@m8/core";
+import * as Phaser from "phaser";
+import {Difficulty, GameCell, GameConfig, GameField, IEnemyEngine, Result, Turn} from "@m8/core";
 import {AchievementsStorage, Factory, GameStorage} from "@m8/helpers";
 import {GameMenuButtonObject, PointerObject, TileObject} from "@m8/objects";
 
 export class GameScene extends Phaser.Scene {
 
+    private _difficulty: Difficulty;
     private _factory: Factory;
     private _enemyEngine: IEnemyEngine;
 
@@ -22,6 +24,7 @@ export class GameScene extends Phaser.Scene {
     // noinspection JSUnusedGlobalSymbols
     init(config: GameConfig): void {
         this._turn = Turn.Player;
+        this._difficulty = config.difficulty;
 
         this._factory = config.factory;
         this._gameField = config.gameField;
@@ -46,10 +49,11 @@ export class GameScene extends Phaser.Scene {
     create() {
         this.input.setTopOnly(true);
 
-        const scoreTextStyle = {fontFamily: "m8", fontSize: 24, fixedWidth: 100, align: "center"};
+        let playerScoreTextStyle = {fontFamily: "m8", fontSize: 24, fixedWidth: 200, align: "left"};
+        let enemyScoreTextStyle = {fontFamily: "m8", fontSize: 24, fixedWidth: 210, align: "right"};
 
-        this._playerSide.text = this.add.text(100, 100, "", scoreTextStyle);
-        this._enemySide.text = this.add.text(500, 100, "", scoreTextStyle);
+        this._playerSide.text = this.add.text(75, 100, "", playerScoreTextStyle);
+        this._enemySide.text = this.add.text(420, 100, "", enemyScoreTextStyle);
 
         this._tiles = [];
 
@@ -93,10 +97,13 @@ export class GameScene extends Phaser.Scene {
 
     update() {
         if (this._playerSide.text) {
-            this._playerSide.text.setText(`${this._playerSide.score} очк.`);
+            this._playerSide.text.setText(`Игрок: ${this._playerSide.score} очк.`);
         }
         if (this._enemySide.text) {
-            this._enemySide.text.setText(`${this._enemySide.score} очк.`);
+
+            let enemy = this._difficulty == Difficulty.Hard ? "Сложный" : "Простой";
+
+            this._enemySide.text.setText(`${enemy}: ${this._enemySide.score} очк.`);
         }
     }
 

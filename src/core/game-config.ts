@@ -1,6 +1,7 @@
 import {Factory} from "@m8/helpers";
-import {GameField} from "./game-field";
+import {Difficulty} from "./difficulty";
 import {IEnemyEngine} from "./engines";
+import {GameField} from "./game-field";
 
 export interface GameConfig {
     factory: Factory;
@@ -10,6 +11,8 @@ export interface GameConfig {
     engine: IEnemyEngine;
 
     pointerIndex: number;
+
+    difficulty: Difficulty
 
     playerScore: number;
     enemyScore: number;
