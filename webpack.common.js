@@ -1,8 +1,9 @@
 const path = require("path");
 const webpack = require("webpack");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 const minifyJson = require("node-json-minify");
+const WritePlugin = require("write-file-webpack-plugin");
 
 module.exports = {
 
@@ -28,10 +29,6 @@ module.exports = {
                 test: /\.(tsx?)|(js)$/,
                 exclude: /node_modules/,
                 loader: "ts-loader"
-            },
-            { // For shaders
-                test: [/\.vert$/, /\.frag$/],
-                use: "raw-loader"
             }
         ]
     },
@@ -41,20 +38,13 @@ module.exports = {
             CANVAS_RENDERER: JSON.stringify(true),
             WEBGL_RENDERER: JSON.stringify(true)
         }),
-        new webpack.NamedModulesPlugin(),
-        new CopyWebpackPlugin([
+        new CopyPlugin([
             {
-                // Will resolve to RepoDir/assets
-                from: "assets",
-
-                // Copies all files from above dest to dist/
-                to: "./",
-
                 // Minify json files
+                from: "*.json",
+                context: "data",
+                to: "[name].json",
                 transform(content, path) {
-                    if (!path.toLowerCase().endsWith(".json")) {
-                        return Promise.resolve(content);
-                    }
                     return minifyJson(content.toString());
                 }
             },
@@ -64,6 +54,12 @@ module.exports = {
                 // Copies all files from above dest to dist/
                 to: "./"
             }
-        ])
+        ]),
+        new WritePlugin({
+            test: function (path) {
+                path = path.toLowerCase();
+                return path.endsWith(".json") || path.endsWith(".js");
+            }
+        })
     ]
 };

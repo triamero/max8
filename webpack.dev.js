@@ -1,6 +1,8 @@
 const path = require("path");
+const webpack = require("webpack");
 const merge = require("webpack-merge");
 const common = require("./webpack.common");
+const HtmlPlugin = require("html-webpack-plugin");
 
 module.exports = merge(common, {
     mode: "development",
@@ -11,8 +13,7 @@ module.exports = merge(common, {
         hot: true,
         watchContentBase: true,
         compress: false,
-        port: 4201,
-        writeToDisk: true
+        port: 4201
     },
 
     watchOptions: {
@@ -23,5 +24,12 @@ module.exports = merge(common, {
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "main.js"
-    }
+    },
+
+    plugins: [
+        new HtmlPlugin({
+            template: path.resolve(__dirname, "./src/index.html"),
+            inject: "body",
+        })
+    ]
 });

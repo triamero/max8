@@ -1,0 +1,28 @@
+{
+  "ru": {
+    "new_game": "НОВАЯ ИГРА",
+    "continue": "ПРОДОЛЖИТЬ",
+    "training": "ОБУЧЕНИЕ",
+    "hall_of_fame": "ДОСТИЖЕНИЯ",
+
+    "enemy": "ПРОТИВНИК",
+    "easy": "ПРОСТОЙ",
+    "hard": "СЛОЖНЫЙ",
+    "field_size": "РАЗМЕР ПОЛЯ",
+    "start_game": "НАЧАТЬ ИГРУ"
+
+  },
+  "en": {
+    "new_game": "NEW GAME",
+    "continue": "CONTINUE",
+    "training": "TRAINING",
+    "hall_of_fame": "ACHIEVEMENTS",
+
+    "enemy": "ENEMY",
+    "easy": "EASY",
+    "hard": "HARD",
+    "field_size": "SIZE",
+    "start_game": "START GAME"
+
+  }
+}

@@ -5,14 +5,14 @@ export class BootScene extends Phaser.Scene {
 
     // noinspection JSUnusedGlobalSymbols
     preload() {
-        this.load.image("flat-button", "dist/flat-button.png");
-        this.load.image("square-button", "dist/square-button.png");
-        this.load.image("gear", "dist/gear.png");
+        this.load.image("flat-button", "assets/flat-button.png");
+        this.load.image("square-button", "assets/square-button.png");
+        this.load.image("gear", "assets/gear.png");
 
-        this.load.image("ach-icon", "dist/ach-icon.png");
-        this.load.image("ach-back", "dist/ach-back.png");
-        this.load.image("ach-end", "dist/ach-end.png");
-        this.load.image("ach-icon-locked", "dist/ach-icon-locked.png");
+        this.load.image("ach-icon", "assets/ach-icon.png");
+        this.load.image("ach-back", "assets/ach-back.png");
+        this.load.image("ach-end", "assets/ach-end.png");
+        this.load.image("ach-icon-locked", "assets/ach-icon-locked.png");
 
         this.load.json("achievements", "dist/achs.json");
 

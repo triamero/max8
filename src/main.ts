@@ -11,6 +11,7 @@ import {
     TrainingScene,
     NewAchievementScene
 } from "./scenes";
+
 require("./shared/linq");
 
 class Main extends Phaser.Game {
@@ -45,6 +46,11 @@ class Main extends Phaser.Game {
     }
 }
 
-window.onload = () => {
-    const GameApp: Phaser.Game = new Main();
-};
+
+window.addEventListener("load", () => {
+    (<any>window).gameApp = new Main();
+});
+
+window.addEventListener("deviceready", () => {
+    (<any>window).gameApp = new Main();
+});

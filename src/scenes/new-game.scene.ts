@@ -1,3 +1,4 @@
+import * as Phaser from "phaser";
 import {Difficulty, GameParameters} from "@m8/core";
 import {MenuButtonObject, SquareButtonObject} from "@m8/objects";
 import {GameStorage} from "@m8/helpers";
