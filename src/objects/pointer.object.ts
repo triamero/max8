@@ -113,7 +113,7 @@ export class PointerObject extends Phaser.GameObjects.Rectangle {
                 onActive: (tween: any, targets: any[]) => {
                     const me = targets[0];
 
-                    var t = me.rotation + Math.atan2(targetPoint.y - center.y, targetPoint.x - center.x);
+                    let t = me.rotation + Math.atan2(targetPoint.y - center.y, targetPoint.x - center.x);
                     me.x = center.x + (distance * Math.cos(t));
                     me.y = center.y + (distance * Math.sin(t));
                 },
