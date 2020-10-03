@@ -1,7 +1,7 @@
 import {Difficulty} from "./difficulty";
 
 export interface Result {
-    difficulty: Difficulty
+    difficulty: Difficulty;
     playerScore: number;
     enemyScore: number;
 }

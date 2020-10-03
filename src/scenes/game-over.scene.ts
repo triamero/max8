@@ -1,4 +1,5 @@
-import {Difficulty, Result} from "@m8/core";
+import * as Phaser from "phaser";
+import {Ads, Difficulty, Result} from "@m8/core";
 import {MenuButtonObject} from "@m8/objects";
 import {AchievementsStorage} from "@m8/helpers";
 
@@ -14,8 +15,8 @@ export class GameOverScene extends Phaser.Scene {
 
     // noinspection JSUnusedGlobalSymbols
     create() {
-        const window = this.add.image(350, 400, "square-button").setScale(2);
-        this._text = this.add.text(200, 300, this._getText(), {
+        this.add.image(350, 400, "square-button").setScale(2);
+        this._text = this.add.text(200, 300, "", {
             fontFamily: "m8",
             fontSize: 36,
             fixedWidth: 300,
@@ -32,12 +33,34 @@ export class GameOverScene extends Phaser.Scene {
             new MenuButtonObject(this, 350, 470)
                 .setText("Выйти")
                 .on("click", this._onComplete, this));
+
+        let result = this._getResult();
+
+        switch (result) {
+            case GameResult.Winner: {
+                this._text.setText("Вы победили!");
+                if (this._result.difficulty === Difficulty.Easy) {
+                    AchievementsStorage.give(3);
+                } else if (this._result.difficulty === Difficulty.Hard) {
+                    AchievementsStorage.give(4);
+                }
+                break;
+            }
+            case GameResult.Loser: {
+                this._text.setText("Вы проиграли");
+                Ads.showInterstitial().finally(() => AchievementsStorage.give(6));
+                break;
+            }
+            case GameResult.Draw: {
+                this._text.setText("Ничья");
+                AchievementsStorage.give(5);
+                break
+            }
+        }
     }
 
     private _onComplete() {
-
         this.scene.start("main-menu");
-
         this.scene.stop("game");
         this.scene.stop("game-over");
     }
@@ -46,27 +69,21 @@ export class GameOverScene extends Phaser.Scene {
         this.scene.start("prepare-game", {restart: true});
     }
 
-    private _getText(): string {
-        // у игрока больше очков чем у соперника - игрок победил
+    private _getResult(): GameResult {
+        // у соперника меньше очков чем у игрока - игрок победил
         if (this._result.enemyScore < this._result.playerScore) {
-
-            if (this._result.difficulty === Difficulty.Easy) {
-                AchievementsStorage.give(3);
-            } else if (this._result.difficulty === Difficulty.Hard) {
-                AchievementsStorage.give(4);
-            }
-
-            return "Вы победили!";
+            return GameResult.Winner;
         }
-
         // у соперника больше очков чем у игрока - соперник победил
         if (this._result.enemyScore > this._result.playerScore) {
-            AchievementsStorage.give(6);
-            return "Вы проиграли";
+            return GameResult.Loser;
         }
-
-        // ничья
-        AchievementsStorage.give(5);
-        return "Ничья";
+        return GameResult.Draw;
     }
+}
+
+enum GameResult {
+    Loser = -1,
+    Draw = 0,
+    Winner = 1
 }

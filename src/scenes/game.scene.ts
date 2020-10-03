@@ -1,5 +1,5 @@
 import * as Phaser from "phaser";
-import {Difficulty, GameCell, GameConfig, GameField, IEnemyEngine, Result, Turn} from "@m8/core";
+import {Ads, Difficulty, GameCell, GameConfig, GameField, IEnemyEngine, Result, Turn} from "@m8/core";
 import {AchievementsStorage, Factory, GameStorage} from "@m8/helpers";
 import {GameMenuButtonObject, PointerObject, TileObject} from "@m8/objects";
 
@@ -43,6 +43,19 @@ export class GameScene extends Phaser.Scene {
         };
 
         this._saveGame();
+
+        this.events
+            .on("start", Ads.showBanner)
+            .on("resume", Ads.showBanner)
+            .on("wake", Ads.showBanner)
+
+            .on("pause", Ads.hideBanner)
+            .on("shutdown", Ads.hideBanner)
+            .on("sleep", Ads.hideBanner)
+            .on("destroy", Ads.hideBanner);
+
+        Ads.showBanner();
+        Ads.prepareInterstitial();
     }
 
     // noinspection JSUnusedGlobalSymbols
@@ -100,9 +113,7 @@ export class GameScene extends Phaser.Scene {
             this._playerSide.text.setText(`Игрок: ${this._playerSide.score} очк.`);
         }
         if (this._enemySide.text) {
-
             let enemy = this._difficulty == Difficulty.Hard ? "Сложный" : "Простой";
-
             this._enemySide.text.setText(`${enemy}: ${this._enemySide.score} очк.`);
         }
     }
