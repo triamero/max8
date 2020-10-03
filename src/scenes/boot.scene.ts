@@ -7,7 +7,9 @@ export class BootScene extends Phaser.Scene {
     preload() {
         this.load.image("flat-button", "assets/flat-button.png");
         this.load.image("square-button", "assets/square-button.png");
-        this.load.image("gear", "assets/gear.png");
+        this.load.image("settings", "assets/settings.png");
+        this.load.image("back", "assets/back.png");
+        this.load.image("color", "assets/color.png");
 
         this.load.image("ach-icon", "assets/ach-icon.png");
         this.load.image("ach-back", "assets/ach-back.png");
@@ -15,6 +17,13 @@ export class BootScene extends Phaser.Scene {
         this.load.image("ach-icon-locked", "assets/ach-icon-locked.png");
 
         this.load.json("achievements", "dist/achs.json");
+
+        this.load.spritesheet("tiles", "assets/tiles.png", {
+            frameHeight: 176,
+            frameWidth: 176,
+            startFrame: 0,
+            endFrame: 15
+        });
 
         this.load.scenePlugin({key: "rexuiplugin", url: "dist/rexuiplugin.min.js", sceneKey: 'rexUI'});
     }

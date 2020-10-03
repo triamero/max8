@@ -1,3 +1,4 @@
+import * as Phaser from "phaser";
 import {MenuButtonObject} from "@m8/objects";
 
 export class GameMenuScene extends Phaser.Scene {

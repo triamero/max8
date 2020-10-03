@@ -1,6 +1,6 @@
 import * as Phaser from "phaser";
 import {Difficulty, GameParameters} from "@m8/core";
-import {MenuButtonObject, SquareButtonObject} from "@m8/objects";
+import {ControlButtonObject, MenuButtonObject, SquareButtonObject} from "@m8/objects";
 import {GameStorage} from "@m8/helpers";
 
 export class NewGameScene extends Phaser.Scene {
@@ -54,6 +54,11 @@ export class NewGameScene extends Phaser.Scene {
 
         this._small.on("click", () => this._toggleSize(true, false));
         this._large.on("click", () => this._toggleSize(false, true));
+
+        this.add.existing(new ControlButtonObject(this, 100, 35, "back").on("click", () => {
+            this.scene.start("main-menu");
+            this.scene.stop();
+        }));
     }
 
     private _toggleDifficulty(easy: boolean, hard: boolean) {

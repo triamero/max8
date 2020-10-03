@@ -1,6 +1,6 @@
 import * as Phaser from "phaser";
 import {AchievementsStorage} from "@m8/helpers";
-import {MenuButtonObject} from "@m8/objects";
+import {ControlButtonObject, MenuButtonObject} from "@m8/objects";
 import {Achievement} from "@m8/core";
 
 const COLOR_PRIMARY = 0x4e342e;
@@ -22,6 +22,11 @@ export class HallOfFameScene extends Phaser.Scene {
         AchievementsStorage.give(7);
 
         const my = AchievementsStorage.getMy();
+
+        this.add.existing(new ControlButtonObject(this, 100, 35, "back").on("click", () => {
+            this.scene.start("main-menu");
+            this.scene.stop();
+        }));
 
         this._grid = this.rexUI.add
             .gridTable({
@@ -105,14 +110,6 @@ export class HallOfFameScene extends Phaser.Scene {
                 items: this._createItems()
             })
             .layout();
-
-        this.add.existing(
-            new MenuButtonObject(this, 350, 730)
-                .setText("УЙТИ")
-                .on("click", () => {
-                    this.scene.start("main-menu");
-                    this.scene.stop();
-                }));
     }
 
     private _createItems(): Achievement[] {

@@ -2,16 +2,7 @@ import {ClickableObject} from "./clickable.object";
 
 export class TileObject extends ClickableObject {
 
-    private readonly _textStyle: any = {
-        fontSize: 40,
-        fontFamily: "m8",
-        color: "#ffffff",
-        fixedWidth: 74,
-        align: "center"
-    };
-
-    private readonly _text: Phaser.GameObjects.Text;
-    private readonly _rect: Phaser.GameObjects.Image;
+    private readonly _rect: Phaser.GameObjects.Sprite;
     private readonly _bound: Phaser.GameObjects.Graphics;
 
     private _value: number;
@@ -28,7 +19,7 @@ export class TileObject extends ClickableObject {
 
         this._coords = coords;
 
-        this._rect = scene.add.image(0, 0, "square-button");
+        this._rect = scene.add.sprite(0, 0, "tiles");
 
         this._rect
             .setScale(width / this._rect.width, height / this._rect.height)
@@ -39,13 +30,9 @@ export class TileObject extends ClickableObject {
             .strokeRoundedRect(-width / 2, -height / 2, width, height, 23)
             .setVisible(false);
 
-        this._textStyle.fixedWidth = width;
-
-        this._text = scene.add.text(width / -2, this._textStyle.fontSize / -2, "", this._textStyle);
-
         this.setSize(width, height).setInteractive({useHandCursor: true});
 
-        this.add([this._rect, this._text, this._bound]);
+        this.add([this._rect, this._bound]);
     }
 
     public select(): this {
@@ -66,11 +53,9 @@ export class TileObject extends ClickableObject {
         this._value = value;
 
         if (value > 0) {
-            this._text.setStyle({color: "#c7ffce"});
-            this._text.setText("+" + value.toFixed(0));
+            this._rect.setFrame(8 - value);
         } else {
-            this._text.setStyle({color: "#ffc7c7"});
-            this._text.setText(value.toFixed(0))
+            this._rect.setFrame(16 + value);
         }
 
         return this;

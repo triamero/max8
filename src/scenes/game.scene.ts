@@ -1,7 +1,7 @@
 import * as Phaser from "phaser";
 import {Ads, Difficulty, GameCell, GameConfig, GameField, IEnemyEngine, Result, Turn} from "@m8/core";
 import {AchievementsStorage, Factory, GameStorage} from "@m8/helpers";
-import {GameMenuButtonObject, PointerObject, TileObject} from "@m8/objects";
+import {ControlButtonObject, PointerObject, TileObject} from "@m8/objects";
 
 export class GameScene extends Phaser.Scene {
 
@@ -65,47 +65,53 @@ export class GameScene extends Phaser.Scene {
         let playerScoreTextStyle = {fontFamily: "m8", fontSize: 24, fixedWidth: 200, align: "left"};
         let enemyScoreTextStyle = {fontFamily: "m8", fontSize: 24, fixedWidth: 210, align: "right"};
 
-        this._playerSide.text = this.add.text(75, 100, "", playerScoreTextStyle);
+        this._playerSide.text = this.add.text(70, 100, "", playerScoreTextStyle);
         this._enemySide.text = this.add.text(420, 100, "", enemyScoreTextStyle);
 
+        this.add.existing(new ControlButtonObject(this, 100, 35, "back").on("click", () => {
+            this.scene.start("main-menu");
+            this.scene.stop();
+        }));
+        this.add.existing(new ControlButtonObject(this, 530, 35, "color"));
+        this.add.existing(new ControlButtonObject(this, 600, 35, "settings").on("click", this._onSettingsClick, this));
+
         this._tiles = [];
-
-        const tweens: any[] = [];
-
         for (let x = 0; x < this._gameField.size; x++) {
 
             this._tiles.push([]);
-
             for (let y = 0; y < this._gameField.size; y++) {
-
                 const cell = this._gameField.getCell(x, y);
 
-                const tile =
-                    this._tiles[x][y] =
-                        this._factory
-                            .createTile(this, x, y)
-                            .setValue(this._gameField.getCell(x, y).value)
-                            .setScale(0, 1)
-                            .disable();
+                const tile = this._tiles[x][y] =
+                    this._factory
+                        .createTile(this, x, y)
+                        .setValue(this._gameField.getCell(x, y).value)
+                        .setScale(0, 1)
+                        .disable();
 
                 if (cell.value === 0) {
                     tile.setDestroyed();
+                } else {
+                    tile.on("click", () => this._onClickTile(tile.coords[0], tile.coords[1]))
+                        .on("pointerover", () => tile.select())
+                        .on("pointerout", () => tile.deselect());
                 }
 
-                tweens.push({
+                let tween = {
                     targets: [tile],
                     scaleX: 1,
                     duration: 200,
-                    delay: (x + y) * 40
-                });
+                    delay: (x + y) * 40,
+                    onComplete: <Function>null
+                };
+
+                if (x === this._gameField.size - 1 && y === this._gameField.size - 1) {
+                    tween.onComplete = this._startGame.bind(this)
+                }
+
+                this.add.tween(tween);
             }
         }
-
-        const lastTween = tweens[tweens.length - 1];
-        lastTween.onComplete = this._startGame.bind(this);
-        tweens.forEach(x => {
-            this.add.tween(x);
-        });
     }
 
     update() {
@@ -121,24 +127,11 @@ export class GameScene extends Phaser.Scene {
     private _startGame() {
         this._gameField.once("cell-taken", this._onTileTaken, this);
 
-        this._tiles.forEach(rows => {
-            rows.forEach(cell => {
-
-                if (cell.getValue() !== 0) {
-                    cell.on("click", () => this._onClickTile(cell.coords[0], cell.coords[1]))
-                        .on("pointerover", () => cell.select())
-                        .on("pointerout", () => cell.deselect());
-                }
-            });
-        });
-
         this._pointer = this._factory.createPointer(this).setStrokeStyle(6, 0x778CA7);
 
         this._pointer.moveToVertical(this._playerSide.index);
 
         this._redrawField();
-
-        this.add.existing(new GameMenuButtonObject(this, 600, 35).on("click", this._onGameMenuClick, this));
     }
 
     private _onTileTaken(x: number, y: number) {
@@ -291,7 +284,6 @@ export class GameScene extends Phaser.Scene {
             playerScore: this._playerSide.score,
             enemyScore: this._enemySide.score
         };
-
         this.scene.launch("game-over", result);
         this.scene.pause();
     }
@@ -316,7 +308,7 @@ export class GameScene extends Phaser.Scene {
         });
     }
 
-    private _onGameMenuClick() {
+    private _onSettingsClick() {
         this.scene.launch("game-menu");
 
         const gameMenu = this.scene.get("game-menu");

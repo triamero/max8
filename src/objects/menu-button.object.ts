@@ -1,3 +1,4 @@
+import * as Phaser from "phaser";
 import {ClickableObject} from "./clickable.object";
 
 export class MenuButtonObject extends ClickableObject {

@@ -1,4 +1,5 @@
-import {MenuButtonObject} from "@m8/objects";
+import * as Phaser from "phaser";
+import {ControlButtonObject} from "@m8/objects";
 
 export class TrainingScene extends Phaser.Scene {
 
@@ -22,9 +23,9 @@ export class TrainingScene extends Phaser.Scene {
             wordWrap: {width: 300, useAdvancedWrap: true}
         });
 
-        this.add.existing(
-            new MenuButtonObject(this, 350, 430)
-                .setText("УЙТИ")
-                .on("click", () => this.scene.switch("main-menu")));
+        this.add.existing(new ControlButtonObject(this, 100, 35, "back").on("click", () => {
+            this.scene.start("main-menu");
+            this.scene.stop();
+        }));
     }
 }
