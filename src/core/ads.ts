@@ -6,39 +6,39 @@ export class Ads {
 
     public static showBanner(): Promise<void> {
         if (Ads.window.showBanner) {
-            Ads.window.showBanner();
+            return Ads.window.showBanner();
         }
         return Promise.resolve();
     }
 
     public static hideBanner(): Promise<void> {
         if (Ads.window.hideBanner) {
-            Ads.window.hideBanner();
+            return Ads.window.hideBanner();
         }
         return Promise.resolve();
     }
 
     public static prepareInterstitial(): Promise<void> {
         if (Ads.window.prepareInterstitial) {
-            Ads.window.prepareInterstitial();
+            return Ads.window.prepareInterstitial();
         }
         return Promise.resolve();
     }
 
     public static showInterstitial(): Promise<void> {
         if (Ads.window.showInterstitial) {
-            Ads.window.showInterstitial();
+            return Ads.window.showInterstitial();
         }
         return Promise.resolve();
     }
 }
 
 interface IWindow {
-    showBanner(): void;
+    showBanner(): Promise<void>;
 
-    hideBanner(): void;
+    hideBanner(): Promise<void>;
 
-    prepareInterstitial(): void;
+    prepareInterstitial(): Promise<void>;
 
-    showInterstitial(): void;
+    showInterstitial(): Promise<void>;
 }
