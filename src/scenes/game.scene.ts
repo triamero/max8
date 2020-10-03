@@ -72,7 +72,7 @@ export class GameScene extends Phaser.Scene {
             this.scene.start("main-menu");
             this.scene.stop();
         }));
-        this.add.existing(new ControlButtonObject(this, 530, 35, "color"));
+        // this.add.existing(new ControlButtonObject(this, 530, 35, "color"));
         this.add.existing(new ControlButtonObject(this, 600, 35, "settings").on("click", this._onSettingsClick, this));
 
         this._tiles = [];
