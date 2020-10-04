@@ -11,25 +11,25 @@ export class MenuButtonObject extends ClickableObject {
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y);
 
-        this._img = scene.add.image(0, 0, "flat-button");
+        this._img = scene.add.image(0, 0, "flat-button")
+            .setTint(0xffffff, 0xffffff, 0x555555, 0x555555);
+
         this._text = scene.add.text(-131, -12, "", {
             fixedWidth: 261,
-            fontSize: "24px",
+            fontSize: 24,
             fontFamily: "m8",
             color: "#aaaaaa",
             align: "center"
         });
 
-        this.setSize(261, 58).setInteractive({useHandCursor: true});
-
-        this.add([this._img, this._text]);
+        this.add([this._img, this._text])
+            .setSize(261, 58)
+            .setInteractive({useHandCursor: true});
 
         this.on("pointerover", this.onPointerOver, this)
             .on("pointerout", this.onPointerOut, this)
             .on("pointerup", this.onPointerUp, this)
             .on("pointerdown", this.onPointerDown, this);
-
-        this._img.setTint(0xffffff, 0xffffff, 0x555555, 0x555555);
     }
 
     public setText(text: string): this {

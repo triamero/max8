@@ -18,19 +18,12 @@ export class MainMenuScene extends Phaser.Scene {
             .setText("Обучение")
             .on("click", () => this.scene.start("training"));
 
-        let achievements = new MenuButtonObject(this, 350, 550)
-            .setText("Достижения")
-            .on("click", () => this.scene.start("hall-of-fame"));
-
         this.add.existing(newGame);
         this.add.existing(continueGame);
         this.add.existing(training);
-        this.add.existing(achievements);
 
         if (!localStorage.getItem("saved-game")) {
             continueGame.disable();
         }
-
-        this.scene.launch("new-achievement");
     }
 }

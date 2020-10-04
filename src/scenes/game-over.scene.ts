@@ -1,7 +1,6 @@
 import * as Phaser from "phaser";
-import {Ads, Difficulty, Result} from "@m8/core";
+import {Ads, Result} from "@m8/core";
 import {MenuButtonObject} from "@m8/objects";
-import {AchievementsStorage} from "@m8/helpers";
 
 export class GameOverScene extends Phaser.Scene {
 
@@ -39,21 +38,15 @@ export class GameOverScene extends Phaser.Scene {
         switch (result) {
             case GameResult.Winner: {
                 this._text.setText("Вы победили!");
-                if (this._result.difficulty === Difficulty.Easy) {
-                    AchievementsStorage.give(3);
-                } else if (this._result.difficulty === Difficulty.Hard) {
-                    AchievementsStorage.give(4);
-                }
                 break;
             }
             case GameResult.Loser: {
                 this._text.setText("Вы проиграли");
-                Ads.showInterstitial().finally(() => AchievementsStorage.give(6));
+                Ads.showInterstitial();
                 break;
             }
             case GameResult.Draw: {
                 this._text.setText("Ничья");
-                AchievementsStorage.give(5);
                 break
             }
         }

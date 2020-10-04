@@ -4,12 +4,10 @@ import {
     GameOverScene,
     GameScene,
     GameMenuScene,
-    HallOfFameScene,
     MainMenuScene,
     NewGameScene,
     PrepareGameScene,
-    TrainingScene,
-    NewAchievementScene
+    TrainingScene
 } from "./scenes";
 
 require("./shared/linq");
@@ -34,9 +32,7 @@ class Main extends Phaser.Game {
         this.scene.add("boot", BootScene, false);
         this.scene.add("game", GameScene, false);
         this.scene.add("game-over", GameOverScene, false);
-        this.scene.add("hall-of-fame", HallOfFameScene, false);
         this.scene.add("main-menu", MainMenuScene, false);
-        this.scene.add("new-achievement", NewAchievementScene, false);
         this.scene.add("new-game", NewGameScene, false);
         this.scene.add("training", TrainingScene, false);
         this.scene.add("prepare-game", PrepareGameScene, false);

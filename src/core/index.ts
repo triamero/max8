@@ -1,4 +1,3 @@
-export * from "./achievement";
 export * from "./ads";
 export * from "./difficulty";
 export * from "./direction";
