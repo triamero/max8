@@ -54,7 +54,7 @@ export class TileObject extends ClickableObject {
 
         if (value > 0) {
             this._rect.setFrame(8 - value);
-        } else {
+        } else if (value < 0) {
             this._rect.setFrame(16 + value);
         }
 
