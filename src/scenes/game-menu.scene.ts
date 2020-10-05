@@ -9,17 +9,17 @@ export class GameMenuScene extends Phaser.Scene {
 
         this.add.existing(
             new MenuButtonObject(this, 350, 330)
-                .setText("Продолжить")
+                .setText("continue")
                 .on("click", this._onContinue, this));
 
         this.add.existing(
             new MenuButtonObject(this, 350, 400)
-                .setText("Заново")
+                .setText("restart_game")
                 .on("click", this._onRestart, this));
 
         this.add.existing(
             new MenuButtonObject(this, 350, 470)
-                .setText("Выйти")
+                .setText("quit_game")
                 .on("click", this._onExit, this));
     }
 

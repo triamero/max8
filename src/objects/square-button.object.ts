@@ -31,7 +31,7 @@ export class SquareButtonObject extends ClickableObject {
 
         this._img = scene.add.image(0, 0, "square-button");
         this._text = scene.add.text(-85, -14, text, {
-            fontSize: "24px",
+            fontSize: 28,
             fontFamily: "m8",
             color: "#aaaaaa",
             fixedWidth: 170,

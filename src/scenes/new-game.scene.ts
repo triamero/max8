@@ -28,15 +28,15 @@ export class NewGameScene extends Phaser.Scene {
 
     // noinspection JSUnusedGlobalSymbols
     create() {
-        this.add.text(140, 100, "ПРОТИВНИК", this._textStyle);
+        this.add.image(350, 100, "ru", "enemy").setScale(0.5).setTintFill(0xaaaaaa);
         this.add.existing(this._easy = new SquareButtonObject(this, 225, 250, "ПРОСТОЙ"));
         this.add.existing(this._hard = new SquareButtonObject(this, 475, 250, "СЛОЖНЫЙ"));
 
-        this.add.text(140, 400, "РАЗМЕР ПОЛЯ", this._textStyle);
+        this.add.image(350, 400, "ru", "field_size").setScale(0.5).setTintFill(0xaaaaaa);
         this.add.existing(this._small = new SquareButtonObject(this, 225, 550, "6x6"));
         this.add.existing(this._large = new SquareButtonObject(this, 475, 550, "8x8"));
 
-        this.add.existing(new MenuButtonObject(this, 350, 700).setText("Начать игру").on("click", this._startNewGame, this));
+        this.add.existing(new MenuButtonObject(this, 350, 700).setText("start_game").on("click", this._startNewGame, this));
 
         if (this._prevGameParams) {
             this._easy.selected = this._prevGameParams.difficulty === Difficulty.Easy;

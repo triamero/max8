@@ -4,7 +4,7 @@ import {ClickableObject} from "./clickable.object";
 export class MenuButtonObject extends ClickableObject {
 
     private readonly _img: Phaser.GameObjects.Image;
-    private readonly _text: Phaser.GameObjects.Text;
+    private readonly _text: Phaser.GameObjects.Image;
 
     private _enabled: boolean = true;
 
@@ -14,13 +14,7 @@ export class MenuButtonObject extends ClickableObject {
         this._img = scene.add.image(0, 0, "flat-button")
             .setTint(0xffffff, 0xffffff, 0x555555, 0x555555);
 
-        this._text = scene.add.text(-131, -12, "", {
-            fixedWidth: 261,
-            fontSize: 24,
-            fontFamily: "m8",
-            color: "#aaaaaa",
-            align: "center"
-        });
+        this._text = scene.add.image(0, 0, "ru").setScale(0.5).setTintFill(0xaaaaaa);
 
         this.add([this._img, this._text])
             .setSize(261, 58)
@@ -33,7 +27,7 @@ export class MenuButtonObject extends ClickableObject {
     }
 
     public setText(text: string): this {
-        this._text.setText(text.toUpperCase());
+        this._text.setFrame(text);
         return this;
     }
 
@@ -56,7 +50,6 @@ export class MenuButtonObject extends ClickableObject {
     }
 
     private onPointerOver() {
-
         if (this._enabled) {
             this._img.setTint(0xffffff, 0xffffff, 0x777777, 0x777777);
         }

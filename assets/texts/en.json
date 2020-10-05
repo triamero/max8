@@ -1,0 +1,277 @@
+{
+	"textures": [{
+			"frames": [{
+					"filename": "6x6",
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 404,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 404,
+						"h": 56
+					},
+					"sourceSize": {
+						"w": 404,
+						"h": 56
+					}
+				}, {
+					"filename": "8x8",
+					"frame": {
+						"x": 1,
+						"y": 59,
+						"w": 404,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 404,
+						"h": 56
+					},
+					"sourceSize": {
+						"w": 404,
+						"h": 56
+					}
+				}, {
+					"filename": "continue",
+					"frame": {
+						"x": 1,
+						"y": 117,
+						"w": 333,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 333,
+						"h": 56
+					},
+					"sourceSize": {
+						"w": 333,
+						"h": 56
+					}
+				}, {
+					"filename": "draw",
+					"frame": {
+						"x": 1,
+						"y": 175,
+						"w": 621,
+						"h": 85
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 621,
+						"h": 85
+					},
+					"sourceSize": {
+						"w": 621,
+						"h": 85
+					}
+				}, {
+					"filename": "easy_enemy",
+					"frame": {
+						"x": 1,
+						"y": 262,
+						"w": 404,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 404,
+						"h": 56
+					},
+					"sourceSize": {
+						"w": 404,
+						"h": 56
+					}
+				}, {
+					"filename": "enemy",
+					"frame": {
+						"x": 1,
+						"y": 320,
+						"w": 621,
+						"h": 85
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 621,
+						"h": 85
+					},
+					"sourceSize": {
+						"w": 621,
+						"h": 85
+					}
+				}, {
+					"filename": "field_size",
+					"frame": {
+						"x": 1,
+						"y": 407,
+						"w": 621,
+						"h": 85
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 621,
+						"h": 85
+					},
+					"sourceSize": {
+						"w": 621,
+						"h": 85
+					}
+				}, {
+					"filename": "hard_enemy",
+					"frame": {
+						"x": 1,
+						"y": 494,
+						"w": 404,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 404,
+						"h": 56
+					},
+					"sourceSize": {
+						"w": 404,
+						"h": 56
+					}
+				}, {
+					"filename": "loser",
+					"frame": {
+						"x": 1,
+						"y": 552,
+						"w": 621,
+						"h": 85
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 621,
+						"h": 85
+					},
+					"sourceSize": {
+						"w": 621,
+						"h": 85
+					}
+				}, {
+					"filename": "new_game",
+					"frame": {
+						"x": 336,
+						"y": 117,
+						"w": 333,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 333,
+						"h": 56
+					},
+					"sourceSize": {
+						"w": 333,
+						"h": 56
+					}
+				}, {
+					"filename": "quit_game",
+					"frame": {
+						"x": 407,
+						"y": 1,
+						"w": 333,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 333,
+						"h": 56
+					},
+					"sourceSize": {
+						"w": 333,
+						"h": 56
+					}
+				}, {
+					"filename": "restart_game",
+					"frame": {
+						"x": 407,
+						"y": 59,
+						"w": 333,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 333,
+						"h": 56
+					},
+					"sourceSize": {
+						"w": 333,
+						"h": 56
+					}
+				}, {
+					"filename": "start_game",
+					"frame": {
+						"x": 671,
+						"y": 117,
+						"w": 333,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 333,
+						"h": 56
+					},
+					"sourceSize": {
+						"w": 333,
+						"h": 56
+					}
+				}, {
+					"filename": "training",
+					"frame": {
+						"x": 624,
+						"y": 175,
+						"w": 333,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 333,
+						"h": 56
+					},
+					"sourceSize": {
+						"w": 333,
+						"h": 56
+					}
+				}, {
+					"filename": "winner",
+					"frame": {
+						"x": 1,
+						"y": 639,
+						"w": 621,
+						"h": 85
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 621,
+						"h": 85
+					},
+					"sourceSize": {
+						"w": 621,
+						"h": 85
+					}
+				}
+			]
+		}
+	]
+}

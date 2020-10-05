@@ -25,12 +25,12 @@ export class GameOverScene extends Phaser.Scene {
 
         this.add.existing(
             new MenuButtonObject(this, 350, 400)
-                .setText("Заново")
+                .setText("restart_game")
                 .on("click", this._onRestart, this));
 
         this.add.existing(
             new MenuButtonObject(this, 350, 470)
-                .setText("Выйти")
+                .setText("quit_game")
                 .on("click", this._onComplete, this));
 
         let result = this._getResult();
